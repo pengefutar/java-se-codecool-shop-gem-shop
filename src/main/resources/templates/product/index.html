@@ -34,9 +34,24 @@
 </div>
 
 <div class="container">
-    <div class="well well-sm" th:each="category : ${categories}">
-        <a th:attr="href='/index/category/' + ${category.id}"><strong th:text="${category.name}">Category Title</strong></a>
-    </div>
+
+
+    <select class="well well-sm" onchange="window.location.href=this.value">
+        <option value="-1">Select</option>
+        <optgroup label="Categories">
+            <div th:each="category : ${categories}">
+                <option th:value="@{~/index/category/{path}(path=${category.id})}" th:text="${category.name}"></option>
+            </div>
+        </optgroup>
+        <optgroup label="Supplier">
+            <div th:each="supplier : ${suppliers}">
+                <option th:value="@{~/index/supplier/{path}(path=${supplier.id})}" th:text="${supplier.name}"></option>
+            </div>
+        </optgroup>
+    </select>
+
+
+
 
     <div id="products" class="row list-group">
 

@@ -36,6 +36,7 @@ public class Main {
 
         get("/index/category/:id", ProductController::renderByCategory, new ThymeleafTemplateEngine());
 
+        get("/index/supplier/:id", ProductController::renderBySupplier, new ThymeleafTemplateEngine());
 
         // Add this line to your project to enable the debug screen
         enableDebugScreen();
