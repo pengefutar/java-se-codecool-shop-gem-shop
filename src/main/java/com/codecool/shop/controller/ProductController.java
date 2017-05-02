@@ -15,10 +15,27 @@ import spark.Response;
 import spark.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProductController {
 
-    
 
+    public static ModelAndView renderProducts(Request req, Response res) {
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+
+        Map params = new HashMap<>();
+        params.put("category", productCategoryDataStore.getAll());
+        params.put("products", productDataStore.getAll());
+        return new ModelAndView(params, "product/index");
+    }
+
+    public static ModelAndView renderByCategory(Request req, Response res) {
+        ProductCategoryDaoMem productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        Map params = new HashMap<>();
+        params.put("category", productCategoryDataStore.getAll());
+        //params.put("products", productCategoryDataStore.)
+        return new ModelAndView(params, "product/index");
+    }
 }
