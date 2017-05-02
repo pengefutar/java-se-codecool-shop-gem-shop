@@ -35,7 +35,7 @@
 
 <div class="container">
     <div class="well well-sm" th:each="category : ${categories}">
-        <strong th:text="${category.name}">Category Title</strong>
+        <a th:attr="href='/index/category/' + ${category.id}"><strong th:text="${category.name}">Category Title</strong></a>
     </div>
 
     <div id="products" class="row list-group">
