@@ -9,6 +9,8 @@ import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
+import java.lang.invoke.MethodHandle;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -26,10 +28,14 @@ public class Main {
 
         // Always add generic routes to the end
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
+
         // Equivalent with above
         get("/index", (Request req, Response res) -> {
            return new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res) );
         });
+
+//        get("/index/category", ProductController::renderByCategory, new ThymeleafTemplateEngine());
+
 
         // Add this line to your project to enable the debug screen
         enableDebugScreen();
@@ -52,8 +58,10 @@ public class Main {
         //setting up a new product category
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
         productCategoryDataStore.add(tablet);
+
         ProductCategory potato = new ProductCategory("Potato", "Food", "A very delicious dish. Edible. Vegan. No sugar, no lactose. Much healthy.");
         productCategoryDataStore.add(potato);
+
 
         //setting up products and printing it
         productDataStore.add(new Product("Amazon Fire", 49.9f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
@@ -61,8 +69,6 @@ public class Main {
         productDataStore.add(new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
         Product potato2 = new Product("Happy Potato", 3, "USD", "A potato who is very very happy.", potato, lajos);
         productDataStore.add(potato2);
-        System.out.println(potato2.getId());
-        System.out.println(productDataStore.getAll());
 
     }
 
