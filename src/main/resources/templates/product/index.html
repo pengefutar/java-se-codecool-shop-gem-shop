@@ -34,9 +34,20 @@
 </div>
 
 <div class="container">
-    <div class="well well-sm" th:each="category : ${categories}">
-        <strong th:text="${category.name}">Category Title</strong>
-    </div>
+
+    <select class="well well-sm">
+        <optgroup label="Categories">
+            <div th:each="category : ${categories}">
+                <option th:text="${category.name}"></option>
+            </div>
+        </optgroup>
+        <optgroup label="Suppliers">
+            <div th:each="supplier : ${suppliers}">
+                <option th:text="${supplier.name}"></option>
+            </div>
+        </optgroup>
+    </select>
+
 
     <div id="products" class="row list-group">
 
