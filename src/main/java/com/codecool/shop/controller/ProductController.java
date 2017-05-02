@@ -19,14 +19,6 @@ import java.util.Map;
 
 public class ProductController {
 
-    public static ModelAndView renderProducts(Request req, Response res) {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-
-        Map params = new HashMap<>();
-        params.put("category", productCategoryDataStore.find(2));
-        params.put("products", productDataStore.getBy(productCategoryDataStore.find(2)));
-        return new ModelAndView(params, "product/index");
-    }
+    
 
 }
