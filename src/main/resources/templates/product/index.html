@@ -35,6 +35,7 @@
 
 <div class="container">
 
+
     <select class="well well-sm">
         <optgroup label="Categories">
             <div th:each="category : ${categories}">
@@ -47,6 +48,11 @@
             </div>
         </optgroup>
     </select>
+
+
+    <div class="well well-sm" th:each="category : ${categories}">
+        <a th:attr="href='/index/category/' + ${category.id}"><strong th:text="${category.name}">Category Title</strong></a>
+    </div>
 
 
     <div id="products" class="row list-group">
