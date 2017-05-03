@@ -7,6 +7,7 @@ import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.enumeration.OrderStatus;
 import com.codecool.shop.enumeration.UserState;
 import com.codecool.shop.model.*;
+import jdk.nashorn.internal.parser.JSONParser;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -41,6 +42,13 @@ public class Main {
 
         get("/cart", ProductController::renderToCart, new ThymeleafTemplateEngine());
         // Add this line to your project to enable the debug screen
+
+        post("/add-product/:product-id", (req, res) -> {
+            System.out.println(req.params(":product-id"));
+            res.type("application/json");
+            return "{\"message\":\"Custom 500 handling\"}";
+        });
+
         enableDebugScreen();
     }
 

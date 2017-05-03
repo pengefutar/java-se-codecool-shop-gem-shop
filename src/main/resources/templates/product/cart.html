@@ -23,7 +23,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-
+    <script src="/js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/custom.css" />
 </head>
 
@@ -46,10 +46,10 @@
                                 <p class="lead" th:text="${product.getPrice()}">100 USD</p>
                             </div>
                             <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-default" href="#">+</button>
+                                <button class="btn btn-default add-product" th:attr="id=${product.getId()}">+</button>
                                 <!--<span th:text="${product.quantity}"></span>-->
                                 <span class="product-qty">  quantity  </span>
-                                <button class="btn btn-warning" href="#">-</button>
+                                <button class="btn btn-warning remove-product" th:attr="id=${product.getId()}">-</button>
                             </div>
                             <div class="col-xs-12 col-md-6">
                                 <div>Total price come here</div>
