@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface OrderDao {
 
-    void add(Product product);
-    Product find(int id);
+    void add(Order order);
+    Order find(int id);
     void remove(int id);
 
-    List<Product> getAll();
+    List<Order> getAll();
 }

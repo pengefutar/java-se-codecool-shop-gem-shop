@@ -14,16 +14,28 @@ import java.util.stream.Collectors;
  * Created by eszti on 2017.05.03..
  */
 public class OrderDaoMem implements OrderDao {
-    private List<Product> DATA = new ArrayList<>();
+    private List<Order> DATA = new ArrayList<>();
+    private static OrderDaoMem instance = null;
+
+    private OrderDaoMem() {
+    }
+
+    public static OrderDaoMem getInstance() {
+        if (instance == null) {
+            instance = new OrderDaoMem();
+        }
+        return instance;
+    }
+
 
     @Override
-    public void add(Product product) {
-        product.setId(DATA.size() + 1);
-        DATA.add(product);
+    public void add(Order order) {
+        order.setId(DATA.size() + 1);
+        DATA.add(order);
     }
 
     @Override
-    public Product find(int id) {
+    public Order find(int id) {
         return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -33,7 +45,7 @@ public class OrderDaoMem implements OrderDao {
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<Order> getAll() {
         return DATA;
     }
 
