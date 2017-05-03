@@ -14,6 +14,7 @@ import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,5 +49,13 @@ public class ProductController {
         params.put("categories", productCategoryDataStore.getAll());
         params.put("products", productDataStore.getBy(supplierDataStore.find(searchedId)));
         return new ModelAndView(params, "product/index");
+    }
+
+    public static ModelAndView renderToCart(Request req, Response res){
+        Map params = new HashMap<>();
+        ArrayList<String> a = new ArrayList<>();
+        a.add("value");
+        params.put("proba", a);
+        return new ModelAndView(params, "product/cart");
     }
 }

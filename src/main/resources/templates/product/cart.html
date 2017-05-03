@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Codecool Shop</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/custom.css" />
+</head>
+<body>
+    <div class="main">
+        <h1>Shopping cart</h1>
+        <h2 class="sub-heading">Free shipping from $100!</h2>
+
+        <section class="shopping-cart">
+            <ol class="ui-list shopping-cart--list" id="shopping-cart--list">
+
+                <script id="shopping-cart--list-item-template" type="text/template">
+                    <li class="_grid shopping-cart--list-item">
+                        <div class="_column product-image">
+                            <img class="product-image--img" src="{{=img}}" alt="Item image" />
+                        </div>
+                        <div class="_column product-info">
+                            <h4 class="product-name">{{=name}}</h4>
+                            <p class="product-desc">{{=desc}}</p>
+                            <div class="price product-single-price">${{=price}}</div>
+                        </div>
+                        <div class="_column product-modifiers" data-product-price="{{=price}}">
+                            <div class="_grid">
+                                <button class="_btn _column product-subtract">&minus;</button>
+                                <div class="_column product-qty">0</div>
+                                <button class="_btn _column product-plus">&plus;</button>
+                            </div>
+                            <button class="_btn entypo-trash product-remove">Remove</button>
+                            <div class="price product-total-price">$0.00</div>
+                        </div>
+                    </li>
+                </script>
+
+            </ol>
+
+            <footer class="_grid cart-totals">
+                <div class="_column subtotal" id="subtotalCtr">
+                    <div class="cart-totals-key">Subtotal</div>
+                    <div class="cart-totals-value">$0.00</div>
+                </div>
+                <div class="_column shipping" id="shippingCtr">
+                    <div class="cart-totals-key">Shipping</div>
+                    <div class="cart-totals-value">$0.00</div>
+                </div>
+                <div class="_column taxes" id="taxesCtr">
+                    <div class="cart-totals-key">Taxes (6%)</div>
+                    <div class="cart-totals-value">$0.00</div>
+                </div>
+                <div class="_column total" id="totalCtr">
+                    <div class="cart-totals-key">Total</div>
+                    <div class="cart-totals-value">$0.00</div>
+                </div>
+                <div class="_column checkout">
+                    <button class="_btn checkout-btn entypo-forward">Checkout</button>
+                </div>
+            </footer>
+
+        </section>
+    </div>
+
+</body>
+</html>

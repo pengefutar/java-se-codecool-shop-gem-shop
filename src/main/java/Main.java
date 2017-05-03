@@ -38,6 +38,7 @@ public class Main {
 
         get("/index/supplier/:id", ProductController::renderBySupplier, new ThymeleafTemplateEngine());
 
+        get("/cart", ProductController::renderToCart, new ThymeleafTemplateEngine());
         // Add this line to your project to enable the debug screen
         enableDebugScreen();
     }
