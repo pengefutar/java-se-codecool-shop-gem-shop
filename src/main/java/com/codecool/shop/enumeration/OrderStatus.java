@@ -4,7 +4,7 @@ package com.codecool.shop.enumeration;
  * Created by keli on 2017.05.03..
  */
 public enum OrderStatus {
-    NEW("new"), HOLD("hold"), SHIPPED("shipped"), DELIVERED("delivered"), CLOSED("closed");
+    NEW("new"), HOLD("hold"), CHECKED("checked"), PAID("paid"), SHIPPED("shipped"), DELIVERED("delivered"), CLOSED("closed");
 
     private String value;
 
