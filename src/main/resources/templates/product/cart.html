@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
@@ -23,66 +23,46 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-    <script src="js/main.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/custom.css" />
 </head>
+
 <body>
-    <div class="main">
-        <h1>Shopping cart</h1>
-        <h2 class="sub-heading">Free shipping from $100!</h2>
 
-        <section class="shopping-cart">
-            <ol class="ui-list shopping-cart--list" id="shopping-cart--list">
-
-                <script id="shopping-cart--list-item-template" type="text/template">
-                    <li class="_grid shopping-cart--list-item">
-                        <div class="_column product-image">
-                            <img class="product-image--img" src="{{=img}}" alt="Item image" />
-                        </div>
-                        <div class="_column product-info">
-                            <h4 class="product-name">{{=name}}</h4>
-                            <p class="product-desc">{{=desc}}</p>
-                            <div class="price product-single-price">${{=price}}</div>
-                        </div>
-                        <div class="_column product-modifiers" data-product-price="{{=price}}">
-                            <div class="_grid">
-                                <button class="_btn _column product-subtract">&minus;</button>
-                                <div class="_column product-qty">0</div>
-                                <button class="_btn _column product-plus">&plus;</button>
-                            </div>
-                            <button class="_btn entypo-trash product-remove">Remove</button>
-                            <div class="price product-total-price">$0.00</div>
-                        </div>
-                    </li>
-                </script>
-
-            </ol>
-
-            <footer class="_grid cart-totals">
-                <div class="_column subtotal" id="subtotalCtr">
-                    <div class="cart-totals-key">Subtotal</div>
-                    <div class="cart-totals-value">$0.00</div>
-                </div>
-                <div class="_column shipping" id="shippingCtr">
-                    <div class="cart-totals-key">Shipping</div>
-                    <div class="cart-totals-value">$0.00</div>
-                </div>
-                <div class="_column taxes" id="taxesCtr">
-                    <div class="cart-totals-key">Taxes (6%)</div>
-                    <div class="cart-totals-value">$0.00</div>
-                </div>
-                <div class="_column total" id="totalCtr">
-                    <div class="cart-totals-key">Total</div>
-                    <div class="cart-totals-value">$0.00</div>
-                </div>
-                <div class="_column checkout">
-                    <button class="_btn checkout-btn entypo-forward">Checkout</button>
-                </div>
-            </footer>
-
-        </section>
+    <div class="jumbotron text-center">
+        <h1>Codecool Shop</h1>
     </div>
+
+    <div class="container shopping-cart">
+        <div id="products" class="row list-group">
+            <div class="item col-xs-12 col-lg-12" th:each="product : ${products}">
+                <div class="thumbnail">
+                    <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" th:attr="src='/img/product_' + ${product.id} + '.jpg'" alt="" />
+                    <div class="caption">
+                        <h4 class="group inner list-group-item-heading" th:text="${product.name}">Product name</h4>
+                        <p class="group inner list-group-item-text" th:text="${product.description}">Product description... </p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead" th:text="${product.getPrice()}">100 USD</p>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <button class="btn btn-default" href="#">+</button>
+                                <!--<span th:text="${product.quantity}"></span>-->
+                                <span class="product-qty">  quantity  </span>
+                                <button class="btn btn-warning" href="#">-</button>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div>Total price come here</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="footer :: copy"></div>
 
 </body>
 </html>

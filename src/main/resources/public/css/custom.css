@@ -61,6 +61,9 @@
     margin: 0 0 11px;
 }
 
+#render-to-shopping-cart{
+    float: right;
+}
 
 /* css for the cart.html */
 [class*="entypo-"]:before { font-family: 'entypo', sans-serif; }
