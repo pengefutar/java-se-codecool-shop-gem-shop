@@ -4,12 +4,13 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
+import com.codecool.shop.enumeration.OrderStatus;
+import com.codecool.shop.enumeration.UserState;
 import com.codecool.shop.model.*;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
-import java.lang.invoke.MethodHandle;
 
 public class Main {
 
