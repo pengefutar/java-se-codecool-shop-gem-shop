@@ -37,4 +37,8 @@ public class LineItem {
     public float getPrice() {
         return price;
     }
+
+    public Product getProduct() {
+        return product;
+    }
 }

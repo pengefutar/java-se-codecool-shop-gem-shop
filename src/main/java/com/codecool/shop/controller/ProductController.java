@@ -56,7 +56,7 @@ public class ProductController {
 
     public static ModelAndView renderToCart(Request req, Response res){
         Map params = new HashMap<>();
-        params.put("products", lineItemDataStore.getAll());
+        params.put("lineitems", lineItemDataStore.getAll());
         return new ModelAndView(params, "product/cart");
     }
 }
