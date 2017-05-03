@@ -46,7 +46,7 @@
                                 <p class="lead" th:text="${product.getPrice()}">100 USD</p>
                             </div>
                             <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-default add-product" th:attr="id=${product.getId()}">+</button>
+                                <button class="btn btn-default increase-quantity" th:attr="id=${product.getId()}">+</button>
                                 <!--<span th:text="${product.quantity}"></span>-->
                                 <span class="product-qty">  quantity  </span>
                                 <button class="btn btn-warning remove-product" th:attr="id=${product.getId()}">-</button>

@@ -1,11 +1,9 @@
 
-
-// Ajax proba
 $(document).ready(function(){
 
-    var postAjax = function(productId){
+    var increaseQuantity = function(productId){
         $.ajax({
-            url: "/add-product/" + productId,
+            url: "/increase-product/" + productId,
             type: "POST",
             dataType: "json",
             data: {
@@ -21,9 +19,36 @@ $(document).ready(function(){
         });
     };
 
-    $(".add-product").click(function(){
+    var addToCart = function(productId){
+        $.ajax({
+            url: "/add-product/" + productId,
+            type: "POST",
+            dataType: "json",
+            data: {
+                success: "ok"
+            },
+            success: function(data){
+                console.log(data);
+                var obj = JSON.parse(JSON.stringify(data));
+                document.getElementById("render-to-shopping-cart").innerHTML = "Shopping cart (" + obj.numOfLineItems + ")";
+            },
+            error: function(data){
+                console.log(data);
+                console.log("not okay");
+            }
+        });
+    };
+
+    $(".increase-quantity").click(function(){
         var productId = $(this).attr("id");
-        postAjax(productId);
+        increaseQuantity(productId);
     })
+
+    $(".add-to-cart").click(function(){
+        var productId = $(this).attr("id");
+        addToCart(productId);
+    })
+
+
 
 });

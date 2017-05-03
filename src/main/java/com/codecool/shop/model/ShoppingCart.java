@@ -10,7 +10,7 @@ public class ShoppingCart {
 
     private List<LineItem> shoppingList;
 
-    public ShoppingCart(List<LineItem> shoppingList) {
+    public ShoppingCart() {
         this.shoppingList = new ArrayList<>();
     }
 

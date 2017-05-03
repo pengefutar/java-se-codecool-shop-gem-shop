@@ -11,9 +11,14 @@ import jdk.nashorn.internal.parser.JSONParser;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import org.json.simple.JSONObject;
 
 
 public class Main {
+
+    private static ProductDao productDataStore = ProductDaoMem.getInstance();
+    private static LineItemDao lineItemDataStore = LineItemDaoMem.getInstance();
+    private static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static void main(String[] args) {
 
@@ -43,10 +48,29 @@ public class Main {
         get("/cart", ProductController::renderToCart, new ThymeleafTemplateEngine());
         // Add this line to your project to enable the debug screen
 
-        post("/add-product/:product-id", (req, res) -> {
+        post("/increase-product/:product-id", (req, res) -> {
             System.out.println(req.params(":product-id"));
+            Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
+            System.out.println(product);
             res.type("application/json");
             return "{\"message\":\"Custom 500 handling\"}";
+        });
+
+        post("/add-product/:product-id", (req, res) -> {
+            System.out.println(req.params(":product-id"));
+            Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
+            LineItem lineItem = new LineItem(product);
+            lineItemDataStore.add(lineItem);
+            shoppingCart.add(lineItem);
+            Integer numOfLineItems = shoppingCart.getShoppingList().size();
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("numOfLineItems", numOfLineItems);
+            res.type("application/json");
+            return jsonObj;
+        });
+
+        get("/cart", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render( ProductController.renderToCart(req, res) );
         });
 
         enableDebugScreen();
