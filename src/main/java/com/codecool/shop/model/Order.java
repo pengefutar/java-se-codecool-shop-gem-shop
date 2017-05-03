@@ -45,14 +45,4 @@ public class Order implements Orderable{
                 '}';
     }
 
-    @Override
-    public void add() {
-
-    }
-
-    @Override
-    public void remove() {
-
-    }
-
 }
