@@ -50,9 +50,10 @@
         </optgroup>
     </select>
 
+    <a href="/cart" class="well well-sm btn btn-default" id="render-to-shopping-cart">Shopping cart</a>
 
-<div id="products" class="row list-group">
 
+    <div id="products" class="row list-group">
         <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
             <div class="thumbnail">
                 <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" th:attr="src='/img/product_' + ${prod.id} + '.jpg'" alt="" />
