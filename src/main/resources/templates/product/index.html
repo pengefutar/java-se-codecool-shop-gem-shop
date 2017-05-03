@@ -36,8 +36,8 @@
 <div class="container">
 
 
-    <select class="well well-sm" onchange="window.location.href=this.value">
-        <option value="-1">Select</option>
+    <select class="well well-sm" onChange="window.location.href=this.value">
+        <option id="select" value="-1">Select</option>
         <optgroup label="Categories">
             <div th:each="category : ${categories}">
                 <option th:value="@{~/index/category/{path}(path=${category.id})}" th:text="${category.name}"></option>
@@ -51,9 +51,7 @@
     </select>
 
 
-
-
-    <div id="products" class="row list-group">
+<div id="products" class="row list-group">
 
         <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
             <div class="thumbnail">
