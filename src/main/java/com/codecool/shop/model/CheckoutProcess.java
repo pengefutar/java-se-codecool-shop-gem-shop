@@ -6,7 +6,6 @@ package com.codecool.shop.model;
 public class CheckoutProcess extends AbstractProcess{
 
     protected void action(Orderable item){
-        System.out.println("checkout process action");
         item.checkout();
     }
 

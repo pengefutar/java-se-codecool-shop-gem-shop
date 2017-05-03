@@ -5,11 +5,16 @@ import com.codecool.shop.enumeration.OrderStatus;
 /**
  * Created by eszti on 2017.04.27..
  */
-public class Order implements Orderable{
+public class Order extends BaseModel implements Orderable {
 
     private int id;
     private OrderStatus status;
     private static int counter;
+
+    public Order(String name) {
+        super(name);
+    }
+
 
     public void Order(){
         this.id = counter;
@@ -43,16 +48,6 @@ public class Order implements Orderable{
                 "id=" + id +
                 ", status='" + status + '\'' +
                 '}';
-    }
-
-    @Override
-    public void add() {
-
-    }
-
-    @Override
-    public void remove() {
-
     }
 
 }

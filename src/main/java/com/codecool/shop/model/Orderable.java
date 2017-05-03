@@ -7,6 +7,5 @@ public interface Orderable {
 
     boolean checkout();
     boolean pay();
-    void add();
-    void remove();
+
 }
