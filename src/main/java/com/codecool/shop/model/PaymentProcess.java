@@ -6,7 +6,6 @@ package com.codecool.shop.model;
 public class PaymentProcess extends AbstractProcess{
 
     protected void action(Orderable item){
-        System.out.println("payment process action");
         item.pay();
     }
 
