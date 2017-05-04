@@ -1,16 +1,17 @@
 package com.codecool.shop.model;
-
 import com.codecool.shop.enumeration.OrderStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by eszti on 2017.04.27..
  */
 public class Order extends BaseModel implements Orderable {
-
     private int id;
+    private String name;
+    public Address address;
     private OrderStatus status;
     private static int counter;
     private List<LineItem> lineItemList;
@@ -18,10 +19,11 @@ public class Order extends BaseModel implements Orderable {
         super(name);
     }
 
-
-    public void Order(List<LineItem> lineItemList){
+    public Order(String name, Address address, List<LineItem> lineItemList){
+        super(name);
         this.id = counter;
         counter++;
+        this.address = address;
         this.status = OrderStatus.NEW;
         this.lineItemList = lineItemList;
     }

@@ -11,8 +11,11 @@ import jdk.nashorn.internal.parser.JSONParser;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Session;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import org.json.simple.JSONObject;
+
+import java.util.List;
 
 
 public class Main {
@@ -36,7 +39,6 @@ public class Main {
 
         before("/index", (req, res) -> {
             req.session().attribute("shoppingCart", shoppingCart);
-            System.out.println(shoppingCart.getShoppingList().size());
         });
 
         // Always start with more specific routes
@@ -95,8 +97,6 @@ public class Main {
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("numOfLineItems", numOfLineItems);
             res.type("application/json");
-            // ShoppingCart shoppingCart = req.session().attribute("shoppingCart");
-            // shoppingCart.getShoppingList().forEach(item -> System.out.println(item.getProduct()));
             return jsonObj;
         });
 
@@ -105,12 +105,19 @@ public class Main {
         });
 
         get("/checkout", (Request req, Response res) -> {
-            //Order order = new Order(req.session().attribute("shoppingCart"));
-            //orderDataStore.add(order);
             return new ThymeleafTemplateEngine().render( ProductController.renderToCheckout(req, res) );
         });
 
-        enableDebugScreen();
+        post("/checkout/done", (Request req, Response res) -> {
+            Address orderAddress = new Address(req.queryParams("billingCountry"), req.queryParams("billingCity"),
+                    req.queryParams("billingZip"), req.queryParams("billingAddress"));
+            String name = req.queryParams("name");
+            ShoppingCart currentSession = req.session().attribute("shoppingCart");
+            List<LineItem> lineItems = currentSession.getShoppingList();
+            Order order = new Order(name, orderAddress, lineItems);
+            return req.queryParams("email");
+        });
+            enableDebugScreen();
     }
 
 
@@ -126,7 +133,6 @@ public class Main {
 
 
     public static void populateData() {
-
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
