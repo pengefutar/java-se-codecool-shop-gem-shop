@@ -30,8 +30,11 @@ public class Main {
         // populate some data for the memory storage
         populateData();
 
-        before("/", (req, res) -> {
+        redirect.get("/", "/index");
+
+        before("/index", (req, res) -> {
             req.session().attribute("shoppingCart", shoppingCart);
+            System.out.println(shoppingCart.getShoppingList().size());
         });
 
         // Always start with more specific routes
@@ -53,7 +56,6 @@ public class Main {
         // Add this line to your project to enable the debug screen
 
         post("/increase-product/:product-id", (req, res) -> {
-            System.out.println(req.params(":product-id"));
             Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
             System.out.println(product);
             res.type("application/json");
@@ -61,7 +63,6 @@ public class Main {
         });
 
         post("/add-product/:product-id", (req, res) -> {
-            System.out.println(req.params(":product-id"));
             Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
             LineItem lineItem = new LineItem(product);
             lineItemDataStore.add(lineItem);
