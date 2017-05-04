@@ -9,6 +9,7 @@ import java.util.List;
 public class ShoppingCart {
 
     private List<LineItem> shoppingList;
+    private double totalPrice;
 
     public ShoppingCart() {
         this.shoppingList = new ArrayList<>();
@@ -28,5 +29,13 @@ public class ShoppingCart {
 
     public void remove(LineItem lineItem){
         shoppingList.remove(lineItem);
+    }
+
+    public double getTotalPrice() {
+        totalPrice = 0;
+        for (LineItem lineItem : shoppingList) {
+            totalPrice += lineItem.getPrice();
+        }
+        return totalPrice;
     }
 }
