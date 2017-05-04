@@ -3,6 +3,7 @@ package com.codecool.shop.model;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by eszti on 2017.05.03..
  */
@@ -23,19 +24,20 @@ public class ShoppingCart {
         this.shoppingList = shoppingList;
     }
 
-    public void add(LineItem lineItem){
+    public void add(LineItem lineItem) {
         shoppingList.add(lineItem);
     }
 
-    public void remove(LineItem lineItem){
+    public void remove(LineItem lineItem) {
         shoppingList.remove(lineItem);
     }
 
-    public double getTotalPrice() {
+    public String getTotalPrice() {
         totalPrice = 0;
+
         for (LineItem lineItem : shoppingList) {
             totalPrice += lineItem.getPrice();
         }
-        return totalPrice;
+        return String.format("%.2f", totalPrice);
     }
 }

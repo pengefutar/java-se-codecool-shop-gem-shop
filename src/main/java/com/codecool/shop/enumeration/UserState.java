@@ -7,7 +7,7 @@ public enum UserState {
     NEW("new"), ACTIVE("atcive"), BLOCKED("blocked"), BANNED("banned");
     private String value;
 
-    private UserState(String value){
+    private UserState(String value) {
         this.value = value;
     }
 

@@ -287,7 +287,15 @@ h1, .sub-heading {
     padding-top: 20px;
 }
 
-#back
+#checkout
 {
-    margin-left: -10px;
+    margin-left: 10px;
+}
+
+#render-to-shopping-cart
+{
+    font-weight: bold;
+    color: #b82a0d;
+    font-size: 16px;
+    margin-bottom: 10px;
 }

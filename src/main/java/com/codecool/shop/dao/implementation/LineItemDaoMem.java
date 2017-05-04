@@ -2,13 +2,9 @@ package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.LineItemDao;
 import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by eszti on 2017.05.03..
