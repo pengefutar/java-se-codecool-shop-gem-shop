@@ -36,7 +36,10 @@
 
     <div class="container shopping-cart">
         <div id="back" class="item col-xs-14 col-lg-14">
-            <a  href="/index" class="well well-sm btn btn-default">Back</a>
+            <a  href="/index" class="btn btn-info">Back</a>
+        </div>
+        <div id="checkout" class="item col-xs-14 col-lg-14">
+            <a  href="/checkout" class="btn btn-warning">Checkout</a>
         </div>
         <div id="products" class="row list-group">
             <div class="item col-xs-12 col-lg-12" th:each="lineitem : ${lineitems}" th:attr="id=${'lineitem' + lineitem.getId()}">

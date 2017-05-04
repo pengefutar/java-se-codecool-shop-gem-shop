@@ -8,6 +8,7 @@ import com.codecool.shop.enumeration.OrderStatus;
 import com.codecool.shop.enumeration.UserState;
 import com.codecool.shop.model.*;
 import jdk.nashorn.internal.parser.JSONParser;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -18,6 +19,7 @@ public class Main {
 
     private static ProductDao productDataStore = ProductDaoMem.getInstance();
     private static LineItemDao lineItemDataStore = LineItemDaoMem.getInstance();
+    private static OrderDao orderDataStore = OrderDaoMem.getInstance();
     private static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static void main(String[] args) {
@@ -100,6 +102,12 @@ public class Main {
 
         get("/cart", (Request req, Response res) -> {
             return new ThymeleafTemplateEngine().render( ProductController.renderToCart(req, res, shoppingCart) );
+        });
+
+        get("/checkout", (Request req, Response res) -> {
+            //Order order = new Order(req.session().attribute("shoppingCart"));
+            //orderDataStore.add(order);
+            return new ThymeleafTemplateEngine().render( ProductController.renderToCheckout(req, res) );
         });
 
         enableDebugScreen();

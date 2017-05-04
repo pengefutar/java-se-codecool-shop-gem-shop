@@ -43,22 +43,25 @@ public class ProductController {
 
     public static ModelAndView renderByCategory(Request req, Response res) {
         int searchedId = Integer.parseInt(req.params(":id"));
-
+        ShoppingCart currentSession = req.session().attribute("shoppingCart");
+        int shoppingListSize = currentSession.getShoppingList().size();
         Map params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getBy(productCategoryDataStore.find(searchedId)));
-        params.put("shoppingList", req.session().attribute("shoppingCart"));
+        params.put("shoppingListSize", shoppingListSize);
         return new ModelAndView(params, "product/index");
     }
 
     public static ModelAndView renderBySupplier(Request req, Response res) {
         int searchedId = Integer.parseInt(req.params(":id"));
         Map params = new HashMap<>();
+        ShoppingCart currentSession = req.session().attribute("shoppingCart");
+        int shoppingListSize = currentSession.getShoppingList().size();
         params.put("suppliers", supplierDataStore.getAll());
         params.put("categories", productCategoryDataStore.getAll());
         params.put("products", productDataStore.getBy(supplierDataStore.find(searchedId)));
-        params.put("shoppingList", req.session().attribute("shoppingCart"));
+        params.put("shoppingListSize", shoppingListSize);
         return new ModelAndView(params, "product/index");
     }
 
@@ -74,6 +77,11 @@ public class ProductController {
             params.put("currency", "USD");
         }
         return new ModelAndView(params, "product/cart");
+    }
+
+    public static ModelAndView renderToCheckout(Request req, Response res){
+        Map params = new HashMap<>();
+        return new ModelAndView(params, "product/checkout");
     }
 
 //    public static spark.Request checkSession(Request req){
