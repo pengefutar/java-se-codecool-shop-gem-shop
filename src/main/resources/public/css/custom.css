@@ -282,6 +282,11 @@ h1, .sub-heading {
     font-weight: bold;
 }
 
+#lineitem-price
+{
+    padding-top: 20px;
+}
+
 #back
 {
     margin-left: -10px;

@@ -62,9 +62,17 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderToCart(Request req, Response res){
+    public static ModelAndView renderToCart(Request req, Response res, ShoppingCart shoppingCart){
         Map params = new HashMap<>();
-        params.put("lineitems", lineItemDataStore.getAll());
+        params.put("lineitems", shoppingCart.getShoppingList());
+        if (0 < shoppingCart.getShoppingList().size()) {
+            params.put("totalprice", shoppingCart.getTotalPrice());
+            params.put("currency", shoppingCart.getShoppingList().get(0).getProduct().getDefaultCurrency());
+        }
+        else {
+            params.put("totalprice", 0);
+            params.put("currency", "USD");
+        }
         return new ModelAndView(params, "product/cart");
     }
 

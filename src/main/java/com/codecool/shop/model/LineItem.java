@@ -27,15 +27,20 @@ public class LineItem {
     }
 
     public Integer getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        quantity = quantity;
+        this.quantity = quantity;
+        updatePrice();
     }
     
     public float getPrice() {
-        return price;
+        return this.price;
+    }
+
+    private void updatePrice() {
+        price = quantity * this.product.getDefaultPrice();
     }
 
     public Product getProduct() {

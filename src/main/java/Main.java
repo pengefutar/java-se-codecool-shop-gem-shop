@@ -52,14 +52,36 @@ public class Main {
 
         get("/index/supplier/:id", ProductController::renderBySupplier, new ThymeleafTemplateEngine());
 
-        get("/cart", ProductController::renderToCart, new ThymeleafTemplateEngine());
+        //get("/cart", ProductController::renderToCart, new ThymeleafTemplateEngine());
         // Add this line to your project to enable the debug screen
 
-        post("/increase-product/:product-id", (req, res) -> {
-            Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
-            System.out.println(product);
+        post("/increase-lineitem/:lineitem-id", (req, res) -> {
+            LineItem lineItem = lineItemDataStore.find(Integer.parseInt(req.params(":lineitem-id")));
+            lineItem.setQuantity(lineItem.getQuantity() + 1);
+            JSONObject jsonObj = CreateLineItemJSONObject(lineItem);
+
             res.type("application/json");
-            return "{\"message\":\"Custom 500 handling\"}";
+            return jsonObj;
+        });
+
+        post("/decrease-lineitem/:lineitem-id", (req, res) -> {
+            Integer ID = Integer.parseInt(req.params(":lineitem-id"));
+            LineItem lineItem = lineItemDataStore.find(ID);
+            lineItem.setQuantity(lineItem.getQuantity() - 1);
+            if (lineItem.getQuantity() == 0) {
+                shoppingCart.remove(lineItem);
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("status", "deleted");
+                jsonObj.put("id", ID);
+                jsonObj.put("totalprice", shoppingCart.getTotalPrice());
+                res.type("application/json");
+                return jsonObj;
+            }
+            else {
+                JSONObject jsonObj = CreateLineItemJSONObject(lineItem);
+                res.type("application/json");
+                return jsonObj;
+            }
         });
 
         post("/add-product/:product-id", (req, res) -> {
@@ -77,11 +99,23 @@ public class Main {
         });
 
         get("/cart", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render( ProductController.renderToCart(req, res) );
+            return new ThymeleafTemplateEngine().render( ProductController.renderToCart(req, res, shoppingCart) );
         });
 
         enableDebugScreen();
     }
+
+
+    public static JSONObject CreateLineItemJSONObject(LineItem lineItem) {
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("quantity", lineItem.getQuantity());
+        jsonObj.put("price", lineItem.getPrice());
+        jsonObj.put("currency", lineItem.getProduct().getDefaultCurrency().toString());
+        jsonObj.put("status", "exists");
+        jsonObj.put("totalprice", shoppingCart.getTotalPrice());
+        return jsonObj;
+    }
+
 
     public static void populateData() {
 
