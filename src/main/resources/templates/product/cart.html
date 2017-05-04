@@ -24,7 +24,6 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="/js/main.js"></script>
-
     <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
 </head>
 
@@ -32,54 +31,50 @@
 
 <div class="jumbotron text-center">
     <h1>Codecool Shop</h1>
+    <h2 id="totalprice" th:text="'Total Price: ' + ${totalprice} + ' ' + ${currency}"></h2>
 </div>
 
-<div class="container">
-
-
-    <select class="well well-sm" onChange="window.location.href=this.value">
-        <option id="select">Select</option>
-
-        <option value="/index">All products</option>
-
-        <optgroup label="Categories">
-            <div th:each="category : ${categories}">
-                <option th:value="@{~/index/category/{path}(path=${category.id})}" th:text="${category.name}"></option>
-            </div>
-        </optgroup>
-        <optgroup label="Supplier">
-            <div th:each="supplier : ${suppliers}">
-                <option th:value="@{~/index/supplier/{path}(path=${supplier.id})}" th:text="${supplier.name}"></option>
-            </div>
-        </optgroup>
-    </select>
-
-    <a id="render-to-shopping-cart" href="/cart" class="btn btn-default glyphicon glyphicon-shopping-cart"
-       th:text="' ' + ${shoppingListSize}"></a>
-
+<div class="container shopping-cart">
+    <div id="back" class="item col-xs-14 col-lg-14">
+        <a href="/index" class="btn btn-info">Back</a>
+        <a id="checkout" href="/checkout" class="item col-xs-14 col-lg-14 btn btn-warning">Checkout</a>
+    </div>
+    <br></br>
     <div id="products" class="row list-group">
-        <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
+        <div class="item col-xs-12 col-lg-12" th:each="lineitem : ${lineitems}"
+             th:attr="id=${'lineitem' + lineitem.getId()}">
             <div class="thumbnail">
                 <img class="group list-group-image" src="http://placehold.it/400x250/000/fff"
-                     th:attr="src='/img/product_' + ${prod.id} + '.jpg'" alt=""/>
+                     th:attr="src='/img/product_' + ${lineitem.getProduct().id} + '.jpg'" alt=""/>
                 <div class="caption">
-                    <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
-                    <p class="group inner list-group-item-text" th:text="${prod.description}">Product
+                    <h4 class="group inner list-group-item-heading" th:text="${lineitem.getProduct().name}">Product
+                        name</h4>
+                    <p class="group inner list-group-item-text" th:text="${lineitem.getProduct().description}">Product
                         description... </p>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
-                            <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                            <p class="lead" th:text="${lineitem.getProduct().getPrice()}"></p>
                         </div>
                         <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success add-to-cart" th:attr="id=${prod.getId()}">Add to cart</a>
+                            <button class="btn btn-danger remove-product decrease-quantity"
+                                    th:attr="id=${lineitem.getId()}">-
+                            </button>
+                            <!--<span th:text="${product.quantity}"></span>-->
+                            <span class="product-qty" id="lineitem-quantity"
+                                  th:text="'Quantity: ' + ${lineitem.getQuantity()}"></span>
+                            <button class="btn btn-success increase-quantity" th:attr="id=${lineitem.getId()}">+
+                            </button>
+                        </div>
+                        <div class="col-xs-12 col-md-6 lead" id="lineitem-price">
+                            <div th:text="${lineitem.getPrice()} + ' ' + ${lineitem.getProduct().getDefaultCurrency().toString()}"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+
 
 <div th:replace="footer :: copy"></div>
 

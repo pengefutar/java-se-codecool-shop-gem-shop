@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Codecool Shop</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+</head>
+
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Codecool Shop</h1>
+</div>
+
+<div class="container shopping-cart">
+    <div id="checkoutBack" class="item col-xs-14 col-lg-14">
+        <a href="/cart" class="btn btn-info">Back</a>
+    </div>
+    <br></br>
+    <div id="checkout">
+        <div class="item col-xs-12 col-lg-12">
+            <form class="form-horizontal" action="/checkout/done" method="POST">
+                <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label">Name</label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="name" id="name" placeholder="Name"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-lg-2 control-label">Email</label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <input class="form-control" type="email" name="email" id="email"
+                                   placeholder="Email"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phonenum" class="col-lg-2 control-label">Phone Number</label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <input class="form-control" type="tel" name="phonenum" id="phonenum"
+                                   placeholder="Phone Number"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Billing Address</label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="billingCountry" placeholder="Country"></input>
+                            <input class="form-control" type="text" name="billingCity" placeholder="City"></input>
+                            <input class="form-control" type="text" name="billingZip" placeholder="Zip"></input>
+                            <input class="form-control" type="text" name="billingAddress" placeholder="Address"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Shipping Address</label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="shippingCountry"
+                                   placeholder="Country"></input>
+                            <input class="form-control" type="text" name="shippingCity" placeholder="City"></input>
+                            <input class="form-control" type="text" name="shippingZip" placeholder="Zip"></input>
+                            <input class="form-control" type="text" name="shippingAddress"
+                                   placeholder="Address"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success" id="submit_button" value="submit"></input>
+                    <input type="reset" class="btn btn-warning" value="reset"></input>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="footer :: copy"></div>
+
+</body>
+</html>
