@@ -1,33 +1,22 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.LineItemDao;
-import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.LineItemDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.ShoppingCart;
-import com.codecool.shop.model.Supplier;
-
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
-import spark.Session;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProductController {
     private static ProductDao productDataStore = ProductDaoMem.getInstance();
     private static ProductCategoryDaoMem productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     private static SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-    private static LineItemDao lineItemDataStore = LineItemDaoMem.getInstance();
 
 
     public static ModelAndView renderProducts(Request req, Response res) {
@@ -65,29 +54,22 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderToCart(Request req, Response res, ShoppingCart shoppingCart){
+    public static ModelAndView renderToCart(Request req, Response res, ShoppingCart shoppingCart) {
         Map params = new HashMap<>();
         params.put("lineitems", shoppingCart.getShoppingList());
         if (0 < shoppingCart.getShoppingList().size()) {
             params.put("totalprice", shoppingCart.getTotalPrice());
             params.put("currency", shoppingCart.getShoppingList().get(0).getProduct().getDefaultCurrency());
-        }
-        else {
+        } else {
             params.put("totalprice", 0);
             params.put("currency", "USD");
         }
         return new ModelAndView(params, "product/cart");
     }
 
-    public static ModelAndView renderToCheckout(Request req, Response res){
+    public static ModelAndView renderToCheckout(Request req, Response res) {
         Map params = new HashMap<>();
         return new ModelAndView(params, "product/checkout");
     }
 
-//    public static spark.Request checkSession(Request req){
-//        if (req.session().attribute("shoppingCart") == null){
-//            return req.session().attribute("shoppingCart");
-//        }
-//        return req.session().attribute("shoppingCart", sho);
-//    }
 }

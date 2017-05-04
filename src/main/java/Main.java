@@ -4,14 +4,9 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
-import com.codecool.shop.enumeration.OrderStatus;
-import com.codecool.shop.enumeration.UserState;
 import com.codecool.shop.model.*;
-import jdk.nashorn.internal.parser.JSONParser;
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Session;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import org.json.simple.JSONObject;
 
@@ -115,6 +110,7 @@ public class Main {
             ShoppingCart currentSession = req.session().attribute("shoppingCart");
             List<LineItem> lineItems = currentSession.getShoppingList();
             Order order = new Order(name, orderAddress, lineItems);
+            orderDataStore.add(order);
             return req.queryParams("email");
         });
             enableDebugScreen();
