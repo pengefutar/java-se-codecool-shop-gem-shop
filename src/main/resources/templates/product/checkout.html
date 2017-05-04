@@ -39,13 +39,12 @@
     </div>
     <div id="checkout">
         <div class="item col-xs-12 col-lg-12">
-            <form class="form-horizontal" action method="POST">
-
+            <form class="form-horizontal" action="/checkout/done" method="POST">
                     <div class="form-group">
                         <label for="name" class="col-lg-2 control-label">Name</label>
                         <div class="col-lg-10">
                             <div class="input-group">
-                                <input class="form-control" type="text" name="name" id="name"  placeholder="Name"></input>
+                                <input class="form-control" type="text" name="name" id="name" placeholder="Name"></input>
                             </div>
                         </div>
                     </div>
@@ -69,10 +68,10 @@
                     <label class="col-lg-2 control-label">Billing Address</label>
                     <div class="col-lg-10">
                         <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Country"></input>
-                            <input class="form-control" type="text" placeholder="City"></input>
-                            <input class="form-control" type="text" placeholder="Zip"></input>
-                            <input class="form-control" type="text" placeholder="Address"></input>
+                            <input class="form-control" type="text" name="billingCountry" placeholder="Country"></input>
+                            <input class="form-control" type="text" name="billingCity" placeholder="City"></input>
+                            <input class="form-control" type="text" name="billingZip" placeholder="Zip"></input>
+                            <input class="form-control" type="text" name="billingAddress" placeholder="Address"></input>
                         </div>
                     </div>
                 </div>
@@ -80,10 +79,10 @@
                     <label class="col-lg-2 control-label">Shipping Address</label>
                     <div class="col-lg-10">
                         <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Country"></input>
-                            <input class="form-control" type="text" placeholder="City"></input>
-                            <input class="form-control" type="text" placeholder="Zip"></input>
-                            <input class="form-control" type="text" placeholder="Address"></input>
+                            <input class="form-control" type="text" name="shippingCountry" placeholder="Country"></input>
+                            <input class="form-control" type="text" name="shippingCity" placeholder="City"></input>
+                            <input class="form-control" type="text" name="shippingZip" placeholder="Zip"></input>
+                            <input class="form-control" type="text" name="shippingAddress" placeholder="Address"></input>
                         </div>
                     </div>
                 </div>
