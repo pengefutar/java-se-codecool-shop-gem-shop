@@ -19,11 +19,11 @@ public class Order extends BaseModel implements Orderable {
     }
 
 
-    public void Order(){
+    public void Order(List<LineItem> lineItemList){
         this.id = counter;
         counter++;
         this.status = OrderStatus.NEW;
-        this.lineItemList = new ArrayList<>();
+        this.lineItemList = lineItemList;
     }
 
     public OrderStatus getStatus(){
