@@ -10,11 +10,13 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.ShoppingCart;
 import com.codecool.shop.model.Supplier;
 
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
+import spark.Session;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,11 +29,15 @@ public class ProductController {
     private static SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
     private static LineItemDao lineItemDataStore = LineItemDaoMem.getInstance();
 
+
     public static ModelAndView renderProducts(Request req, Response res) {
         Map params = new HashMap<>();
+        ShoppingCart currentSession = req.session().attribute("shoppingCart");
+        int shoppingListSize = currentSession.getShoppingList().size();
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
+        params.put("shoppingListSize", shoppingListSize);
         return new ModelAndView(params, "product/index");
     }
 
@@ -42,6 +48,7 @@ public class ProductController {
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getBy(productCategoryDataStore.find(searchedId)));
+        params.put("shoppingList", req.session().attribute("shoppingCart"));
         return new ModelAndView(params, "product/index");
     }
 
@@ -51,6 +58,7 @@ public class ProductController {
         params.put("suppliers", supplierDataStore.getAll());
         params.put("categories", productCategoryDataStore.getAll());
         params.put("products", productDataStore.getBy(supplierDataStore.find(searchedId)));
+        params.put("shoppingList", req.session().attribute("shoppingCart"));
         return new ModelAndView(params, "product/index");
     }
 
@@ -59,4 +67,11 @@ public class ProductController {
         params.put("lineitems", lineItemDataStore.getAll());
         return new ModelAndView(params, "product/cart");
     }
+
+//    public static spark.Request checkSession(Request req){
+//        if (req.session().attribute("shoppingCart") == null){
+//            return req.session().attribute("shoppingCart");
+//        }
+//        return req.session().attribute("shoppingCart", sho);
+//    }
 }
