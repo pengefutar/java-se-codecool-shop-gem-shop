@@ -30,6 +30,13 @@ public class Main {
         // populate some data for the memory storage
         populateData();
 
+        redirect.get("/", "/index");
+
+        before("/index", (req, res) -> {
+            req.session().attribute("shoppingCart", shoppingCart);
+            System.out.println(shoppingCart.getShoppingList().size());
+        });
+
         // Always start with more specific routes
         get("/hello", (req, res) -> "Hello World");
 
@@ -52,6 +59,7 @@ public class Main {
             LineItem lineItem = lineItemDataStore.find(Integer.parseInt(req.params(":lineitem-id")));
             lineItem.setQuantity(lineItem.getQuantity() + 1);
             JSONObject jsonObj = CreateLineItemJSONObject(lineItem);
+
             res.type("application/json");
             return jsonObj;
         });
@@ -77,7 +85,6 @@ public class Main {
         });
 
         post("/add-product/:product-id", (req, res) -> {
-            System.out.println(req.params(":product-id"));
             Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
             LineItem lineItem = new LineItem(product);
             lineItemDataStore.add(lineItem);
@@ -86,6 +93,8 @@ public class Main {
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("numOfLineItems", numOfLineItems);
             res.type("application/json");
+            // ShoppingCart shoppingCart = req.session().attribute("shoppingCart");
+            // shoppingCart.getShoppingList().forEach(item -> System.out.println(item.getProduct()));
             return jsonObj;
         });
 
@@ -128,7 +137,6 @@ public class Main {
 
         ProductCategory potato = new ProductCategory("Potato", "Food", "A very delicious dish. Edible. Vegan. No sugar, no lactose. Much healthy.");
         productCategoryDataStore.add(potato);
-
 
         //setting up products and printing it
         productDataStore.add(new Product("Amazon Fire", 49.9f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));

@@ -38,7 +38,14 @@
 
 
     <select class="well well-sm" onChange="window.location.href=this.value">
-        <option id="select" value="-1">Select</option>
+        <option id="select">Select</option>
+
+        <optgroup label="Categories">
+            <div>
+                <option href="/index">All products</option>
+            </div>
+        </optgroup>
+
         <optgroup label="Categories">
             <div th:each="category : ${categories}">
                 <option th:value="@{~/index/category/{path}(path=${category.id})}" th:text="${category.name}"></option>
@@ -51,7 +58,7 @@
         </optgroup>
     </select>
 
-    <a href="/cart" class="well well-sm btn btn-default" id="render-to-shopping-cart">Shopping cart</a>
+    <a id="render-to-shopping-cart" href="/cart" class="well well-sm btn btn-default" th:text="'Shopping cart (' + ${shoppingListSize} + ')' "></a>
 
 
     <div id="products" class="row list-group">
@@ -66,7 +73,7 @@
                             <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                         </div>
                         <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success add-to-cart" href="#" th:attr="id=${prod.getId()}">Add to cart</a>
+                            <a class="btn btn-success add-to-cart" th:attr="id=${prod.getId()}">Add to cart</a>
                         </div>
                     </div>
                 </div>
