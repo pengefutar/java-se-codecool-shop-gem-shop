@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS Currencies (
-  id INTEGER PRIMARY KEY,
-  currency_name VARCHAR(4)
+  id VARCHAR(10) PRIMARY KEY
 );
 
 CREATE TABLE IF NOT EXISTS Categories (
@@ -15,8 +14,8 @@ CREATE TABLE IF NOT EXISTS Suppliers(
 
 CREATE TABLE IF NOT EXISTS Products(
   id INTEGER PRIMARY KEY,
-  default_price INTEGER,
-  currency_id INTEGER,
+  default_price FLOAT,
+  currency_id VARCHAR(10),
   category_id INTEGER,
   supplier_id INTEGER,
   FOREIGN KEY (currency_id) REFERENCES Currencies(id),
