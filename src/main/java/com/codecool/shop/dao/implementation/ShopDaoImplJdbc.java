@@ -2,6 +2,7 @@ package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.model.ProductCategory;
 
+import java.lang.reflect.Field;
 import java.sql.*;
 
 
@@ -22,27 +23,24 @@ public class ShopDaoImplJdbc<T> extends JdbcDao {
                 DB_PASSWORD);
     }
 
-    void add(T object, String tableName) throws SQLException {
+    void add(T object, String tableName) throws SQLException, NoSuchFieldException {
         String query = "INSERT INTO ? (?, ?)";
-        System.out.println(object.getClass().getFields());
+        //System.out.println(object.getClass().getFields());
+        Field name = object.getClass().getDeclaredField("name");
+        Field id = object.getClass().getDeclaredField("id");
 
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, object);
-        stmt.setString(2, object.getName());
-        executeQuery(stmt.toString());
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            String fieldName = fields[i].getName();
 
-        System.out.println(object.toString());
-    }
+            Connection connection = getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, Integer.parseInt(id.toString()));
+            stmt.setString(2, name.toString());
+            executeQuery(stmt.toString());
 
-    public static void main(String[] args) throws SQLException {
-        ShopDaoImplJdbc shop = new ShopDaoImplJdbc();
-        ProductCategory prodcat = new ProductCategory("jkl","tz","gjhg");
-        //System.out.println(prodcat.getName());
-        shop.add(prodcat , "gjhg" );
-
-    }
-
-    }
+            System.out.println(object.toString());
+        }
+    }}
 
 
