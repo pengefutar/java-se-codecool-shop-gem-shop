@@ -25,19 +25,6 @@ public class ShopDaoImplJdbc extends JdbcDao {
                 DB_PASSWORD);
     }
 
-    void add(Product product) throws SQLException {
-        String query = "INSERT INTO products (id, default_price, currency_id, category_id, " +
-                "supplier_id) VALUES(?, ?, ?, ?, ?);";
-
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, product.getId());
-        stmt.setFloat(2, product.gerPriceInFloat());
-        stmt.setString(3, product.getDefaultCurrency().toString());
-        stmt.setInt(4, product.getProductCategory().getId());
-        stmt.setInt(5, product.getSupplier().getId());
-        executeQuery(stmt.toString());
-    }
 
     public static void main(String[] args) throws SQLException {
         ShopDaoImplJdbc shop = new ShopDaoImplJdbc();

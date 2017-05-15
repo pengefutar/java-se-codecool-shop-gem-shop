@@ -3,17 +3,22 @@ CREATE TABLE IF NOT EXISTS Currencies (
 );
 
 CREATE TABLE IF NOT EXISTS Categories (
-  id INTEGER PRIMARY KEY,
-  category_name VARCHAR(40)
+  id SERIAL PRIMARY KEY,
+  category_name VARCHAR(40),
+  department VARCHAR(255),
+  description VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Suppliers(
-  id INTEGER PRIMARY KEY,
-  supplier_name VARCHAR(40)
+  id SERIAL PRIMARY KEY,
+  supplier_name VARCHAR(40),
+  description VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Products(
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(40),
+  description VARCHAR(255),
   default_price FLOAT,
   currency_id VARCHAR(10),
   category_id INTEGER,
