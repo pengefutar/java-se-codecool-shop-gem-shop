@@ -22,16 +22,17 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     public void add(Product product){
-        String query = "INSERT INTO products (name, description, default_price, category_id, supplier_id) " +
-                "VALUES(?, ?, ?, ?, ?);";
+        String query = "INSERT INTO products (name, description, default_price, currency_id, " +
+                "category_id, supplier_id) VALUES(?, ?, ?, ?, ?, ?);";
         try {
             Connection connection = getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, product.getName());
             stmt.setString(2, product.getDescription());
             stmt.setFloat(3, product.getDefaultPrice());
-            stmt.setInt(4, product.getProductCategory().getId());
-            stmt.setInt(5, product.getSupplier().getId());
+            stmt.setString(4, product.getDefaultCurrency().toString());
+            stmt.setInt(5, product.getProductCategory().getId());
+            stmt.setInt(6, product.getSupplier().getId());
             executeQuery(stmt.toString());
         } catch (SQLException e){
             System.out.println("Couldn't add product");
@@ -64,25 +65,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
         return null;
     }
 
-    public int getProductCategoryID(String categoryName) {
-        String query = "SELECT * FROM categories WHERE category_name = ? ;";
-        try {
-            Connection connection = getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, categoryName);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()){
-                System.out.println(resultSet.getInt("id"));
-                return resultSet.getInt("id");
-            } else {
-                return 0;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public Supplier getSupplierInstance(int id) {
         String query = "SELECT * FROM suppliers WHERE id = ?;";
         try{
@@ -91,7 +73,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()){
-                System.out.println(resultSet.getInt("id"));
                 Supplier supplier = new Supplier(resultSet.getString("supplier_name"),
                         resultSet.getString("description"));
                 supplier.setId(resultSet.getInt("id"));
@@ -111,7 +92,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()){
-                System.out.println(resultSet.getInt("id"));
                 ProductCategory productCategory = new ProductCategory(
                         resultSet.getString("category_name"),
                         resultSet.getString("department"),
@@ -126,22 +106,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
     }
 
 
-    public int getSupplierID(String supplierName) {
-        String query = "SELECT * FROM suppliers WHERE supplier_name = ?;";
-        try {
-            Connection connection = getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, supplierName);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()){
-                return resultSet.getInt("id");
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     @Override
     public void remove(int id){
         String query = "DELETE FROM products WHERE id = ?";
@@ -151,9 +115,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(1, id);
             executeQuery(stmt.toString());
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("Couldn't remove the product");
         }
-
     }
 
     public List<Product> getAll() {
@@ -175,20 +138,61 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 productList.add(product);
             }
         } catch (SQLException exception){
-            exception.printStackTrace();
+            System.out.println("Couldn't get all product");
         }
-
         return productList;
     }
 
     @Override
     public List<Product> getBy(Supplier supplier) {
-        return null;
+        List<Product> productList = new ArrayList<>();
+        String query = "SELECT * FROM products WHERE supplier_id = ?;";
+
+        try {
+            Connection connection = getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, supplier.getId());
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()){
+                Product product = new Product(resultSet.getString("name"),
+                        resultSet.getFloat("default_price"),
+                        Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
+                        resultSet.getString("description"),
+                        getProductCategoryInstance(resultSet.getInt("category_id")),
+                        getSupplierInstance(resultSet.getInt("supplier_id")));
+                product.setId(resultSet.getInt("id"));
+                productList.add(product);
+            }
+        } catch (SQLException e){
+            System.out.println("Cannot get products by supplier");
+        }
+        return productList;
     }
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
-        return null;
+        List<Product> productListByCategory = new ArrayList<>();
+        String query = "SELECT * FROM products WHERE category_id = ?;";
+
+        try {
+            Connection connection = getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, productCategory.getId());
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()){
+                Product product = new Product(resultSet.getString("name"),
+                        resultSet.getFloat("default_price"),
+                        Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
+                        resultSet.getString("description"),
+                        getProductCategoryInstance(resultSet.getInt("category_id")),
+                        getSupplierInstance(resultSet.getInt("supplier_id")));
+                product.setId(resultSet.getInt("id"));
+                productListByCategory.add(product);
+            }
+        } catch (SQLException e){
+            System.out.println("Cannot get products by product category");
+        }
+        return productListByCategory;
     }
 
     @Override
@@ -199,22 +203,26 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 DB_PASSWORD);
     }
 
-    public static void main(String[] args){
-        // new ProductDaoImplJdbc().addForeignKey();
-
-//        ProductCategory productCategory = new ProductCategory("sport", "department", "desc");
-//        Supplier supplier = new Supplier("ebay", "desc");
+//    public static void main(String[] args){
 //
+//        // object for method testing, leave here to help test writing
+//        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
+//        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
+//        supplierExample.setId(1);
+//        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
+//                "description");
+//        productCategoryExample.setId(2);
+//        Product productExample = new Product("prod_example", 123,
+//                "USD","desc",
+//                productCategoryExample, supplierExample);
 //
-        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
-//        Product product = new Product("YEYEYEE", 55,
-//                Currency.getInstance("EUR").toString(),"desc",
-//                productCategory, supplier);
-        try {
-            List<Product> list = a.getAll();
-            list.forEach(p -> System.out.println(p.getSupplier().getId()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//        try {
+//            //a.add(productExample);
+//            List<Product> list = a.getAll();
+//            list.forEach(p -> System.out.println(p.getName()));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("asdasdasd");
+//        }
+//    }
 }
