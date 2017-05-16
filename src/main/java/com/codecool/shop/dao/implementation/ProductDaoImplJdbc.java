@@ -6,6 +6,7 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
 import java.sql.*;
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -14,22 +15,49 @@ import java.util.List;
 public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/gem_shop";
-    private static final String DB_USER = "user";
-    private static final String DB_PASSWORD = "pass";
+    private static final String DB_USER = "keli";
+    private static final String DB_PASSWORD = "pg_Abc5354!";
 
+
+    public void addForeignKey(){
+        ProductCategory cat = new ProductCategory("ent", "department", "desc");
+        Supplier supplier = new Supplier("ebay", "desc");
+        Supplier supplier2 = new Supplier("ali", "desc");
+
+        String categoriesQuery = "INSERT INTO categories (category_name, department, description)" +
+                "VALUES('" + cat.getName() + "', '" + cat.getDepartment() + "', '" +
+                cat.getDescription() + "');";
+
+        String supplierQuery = "INSERT INTO Suppliers(supplier_name, description) " +
+                "VALUES('" + supplier.getName() +"', '" + supplier.getDescription() + "');";
+
+        String supplierQuery2 = "INSERT INTO Suppliers(supplier_name, description) " +
+                "VALUES('" + supplier2.getName() +"', '" + supplier2.getDescription() + "');";
+
+        // proba currencies
+        String queryCurrencies = "INSERT INTO currencies VALUES('" +
+                Currency.getInstance("USD").getCurrencyCode().toString() + "');";
+
+        executeQuery(supplierQuery2);
+        executeQuery(supplierQuery);
+        executeQuery(queryCurrencies);
+        executeQuery(categoriesQuery);
+    }
 
     @Override
     public void add(Product product) throws SQLException {
-        String query = "INSERT INTO products (id, default_price, currency_id, category_id, " +
-                "supplier_id) VALUES(?, ?, ?, ?, ?);";
+        String query = "INSERT INTO products (name, description, default_price, category_id, supplier_id) " +
+                "VALUES(?, ?, ?, ?, ?);";
+
+        System.out.println(product.getProductCategory().getId());   // ez az id tök más, mint ami a db-ben van, ez 0
 
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, product.getId());
-        stmt.setFloat(2, product.gerPriceInFloat());
-        stmt.setString(3, product.getDefaultCurrency().toString());
-        stmt.setInt(4, product.getProductCategory().getId());
-        stmt.setInt(5, product.getSupplier().getId());
+        stmt.setString(1, product.getName());
+        stmt.setString(2, product.getDescription());
+        stmt.setFloat(3, product.getDefaultPrice());
+        stmt.setInt(4, getProductCategoryID("sport"));
+        stmt.setInt(5, 1);
         executeQuery(stmt.toString());
     }
 
@@ -40,45 +68,49 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, id);
-        ResultSet resultSet = stmt.executeQuery(query);
+        ResultSet resultSet = stmt.executeQuery();
 
-        while (resultSet.next()){
-            ProductCategory productCategory = getProductCategory(resultSet.getInt("category_id"));
-            Supplier supplier = getSupplier(resultSet.getInt("supplier_id"));
-
-            Product product = new Product(resultSet.getString("name"),
-                    resultSet.getInt("default_price"),
-                    resultSet.getString("currency_id"),
-                    resultSet.getString("description"),
-                    productCategory, supplier
-                    );
-            // ezt chekkold!!
-            return product;
-        }
+//        while (resultSet.next()){
+//            ProductCategory productCategory = getProductCategory(resultSet.getInt("category_id"));
+//            Supplier supplier = getSupplier(resultSet.getInt("supplier_id"));
+//
+//            Product product = new Product(resultSet.getString("name"),
+//                    resultSet.getInt("default_price"),
+//                    resultSet.getString("currency_id"),
+//                    resultSet.getString("description"),
+//                    productCategory, supplier
+//                    );
+//            // ezt chekkold!!
+//            return product;
         return null;
-    }
+        }
 
-    public ProductCategory getProductCategory(int id) throws SQLException {
-        String query = "SELECT * FROM categories WHERE id = ?;";
-
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, id);
-        ResultSet resultSet = stmt.executeQuery(query);
-        resultSet.getInt("id");
-        return new ProductCategory(resultSet.getString("category_name"),
-                resultSet.getString("department"),
-                resultSet.getString("description"));
-    }
-
-    public Supplier getSupplier(int id) throws SQLException{
-        String query = "SELECT * FROM suppliers WHERE id = ?;";
+    public int getProductCategoryID(String categoryName) throws SQLException {
+        String query = "SELECT * FROM categories WHERE category_name = ? ;";
 
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, id);
+        stmt.setString(1, categoryName);
+        ResultSet resultSet = stmt.executeQuery();
+        if (resultSet.next()){
+            System.out.println(resultSet.getInt("id"));
+            return resultSet.getInt("id");
+        } else {
+            return 0;
+        }
+    }
+
+    public int getSupplierID(String supplierName) throws SQLException{
+        String query = "SELECT * FROM suppliers WHERE supplier_name = ?;";
+
+        Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1, supplierName);
         ResultSet resultSet = stmt.executeQuery(query);
         resultSet.getInt("id");
+        if (resultSet.next()){
+            System.out.println(resultSet.getInt("id"));
+        }
         return new Supplier(resultSet.getString("supplier_name"),
                 resultSet.getString("description"));
     }
@@ -114,5 +146,23 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 DATABASE,
                 DB_USER,
                 DB_PASSWORD);
+    }
+
+    public static void main(String[] args){
+        // new ProductDaoImplJdbc().addForeignKey();
+
+        ProductCategory productCategory = new ProductCategory("category", "department", "desc");
+        Supplier supplier = new Supplier("ebay", "desc");
+
+
+        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
+        Product product = new Product("product", 55,
+                Currency.getInstance("EUR").toString(),"Description",
+                productCategory, supplier);
+        try {
+            a.add(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

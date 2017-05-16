@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS Categories, Currencies, Suppliers, Products, Order_status,
+Addresses, Line_items, Orders;
+
 CREATE TABLE IF NOT EXISTS Currencies (
   id VARCHAR(10) PRIMARY KEY
 );
@@ -29,12 +32,12 @@ CREATE TABLE IF NOT EXISTS Products(
 );
 
 CREATE TABLE IF NOT EXISTS Order_status(
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   status_name VARCHAR(40)
 );
 
 CREATE TABLE IF NOT EXISTS Addresses(
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   country VARCHAR(100),
   city VARCHAR(100),
   address VARCHAR(100),
@@ -42,19 +45,19 @@ CREATE TABLE IF NOT EXISTS Addresses(
 );
 
 CREATE TABLE IF NOT EXISTS Orders(
-  id INTEGER PRIMARY KEY,
-  status_id INTEGER,
-  address_id INTEGER,
+  id SERIAL PRIMARY KEY,
+  status_id SERIAL,
+  address_id SERIAL,
   FOREIGN KEY (status_id) REFERENCES Order_status(id),
   FOREIGN KEY (address_id) REFERENCES Addresses(id)
 );
 
 CREATE TABLE IF NOT EXISTS Line_items(
-  id INTEGER PRIMARY KEY,
-  product_id INTEGER,
+  id SERIAL PRIMARY KEY,
+  product_id SERIAL,
   quantity INTEGER,
   price INTEGER,
-  order_id INTEGER,
+  order_id SERIAL,
   FOREIGN KEY (product_id) REFERENCES Products(id),
   FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
