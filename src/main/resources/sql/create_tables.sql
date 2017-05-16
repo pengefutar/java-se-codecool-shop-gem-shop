@@ -8,8 +8,9 @@ CREATE TABLE IF NOT EXISTS Categories (
 );
 
 CREATE TABLE IF NOT EXISTS Suppliers(
-  id INTEGER PRIMARY KEY,
-  supplier_name VARCHAR(40)
+  id SERIAL PRIMARY KEY,
+  supplier_name VARCHAR(40),
+  supplier_description VARCHAR(40)
 );
 
 CREATE TABLE IF NOT EXISTS Products(
