@@ -66,29 +66,20 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     public Product find(int id) {
-        String query = "SELECT * FROM products WHERE name = ?;";
+        String query = "SELECT * FROM products WHERE asdasdasd = ?;";
         try {
             Connection connection = getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()){
+
+            }
+
         } catch (SQLException e){
             e.printStackTrace();
         }
 
-
-//        while (resultSet.next()){
-//            ProductCategory productCategory = getProductCategory(resultSet.getInt("category_id"));
-//            Supplier supplier = getSupplier(resultSet.getInt("supplier_id"));
-//
-//            Product product = new Product(resultSet.getString("name"),
-//                    resultSet.getInt("default_price"),
-//                    resultSet.getString("currency_id"),
-//                    resultSet.getString("description"),
-//                    productCategory, supplier
-//                    );
-//            // ezt chekkold!!
-//            return product;
         return null;
         }
 
@@ -191,7 +182,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             while(resultSet.next()){
                 Product product = new Product(resultSet.getString("name"),
                         resultSet.getFloat("default_price"),
-                        resultSet.getString("currency_id"),
+                        Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("description"),
                         getProductCategoryInstance(resultSet.getInt("category_id")),
                         getSupplierInstance(resultSet.getInt("supplier_id")));
@@ -235,7 +226,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 //                productCategory, supplier);
         try {
             List<Product> list = a.getAll();
-            list.forEach(p -> System.out.println(p.getName()));
+            list.forEach(p -> System.out.println(p.getPrice()));
         } catch (Exception e) {
             e.printStackTrace();
         }
