@@ -10,6 +10,7 @@ import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class ProductController {
     private static SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
 
-    public static ModelAndView renderProducts(Request req, Response res) {
+    public static ModelAndView renderProducts(Request req, Response res) throws SQLException {
         Map params = new HashMap<>();
         ShoppingCart currentSession = req.session().attribute("shoppingCart");
         int shoppingListSize = currentSession.getShoppingList().size();
@@ -30,7 +31,7 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderByCategory(Request req, Response res) {
+    public static ModelAndView renderByCategory(Request req, Response res) throws SQLException {
         int searchedId = Integer.parseInt(req.params(":id"));
         ShoppingCart currentSession = req.session().attribute("shoppingCart");
         int shoppingListSize = currentSession.getShoppingList().size();
@@ -42,7 +43,7 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderBySupplier(Request req, Response res) {
+    public static ModelAndView renderBySupplier(Request req, Response res) throws SQLException {
         int searchedId = Integer.parseInt(req.params(":id"));
         Map params = new HashMap<>();
         ShoppingCart currentSession = req.session().attribute("shoppingCart");
