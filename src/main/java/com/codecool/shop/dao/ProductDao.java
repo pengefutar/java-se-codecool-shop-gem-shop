@@ -4,6 +4,7 @@ import com.codecool.shop.model.Supplier;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ProductDao {
