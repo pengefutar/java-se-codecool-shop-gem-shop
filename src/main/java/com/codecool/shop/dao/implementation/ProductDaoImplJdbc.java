@@ -104,7 +104,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, supplierName);
-        ResultSet resultSet = stmt.executeQuery(query);
+        ResultSet resultSet = stmt.executeQuery();
         resultSet.getInt("id");
         if (resultSet.next()){
             System.out.println(resultSet.getInt("id"));
@@ -154,8 +154,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
 
         ProductDaoImplJdbc a = new ProductDaoImplJdbc();
-        Product product = new Product("product", 55,
-                Currency.getInstance("EUR").toString(),"Description",
+        Product product = new Product("YEYEYEE", 55,
+                Currency.getInstance("EUR").toString(),"desc",
                 productCategory, supplier);
         try {
             a.add(product);
