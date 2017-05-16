@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -22,7 +23,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     public void add(Product product){
-        String query = "INSERT INTO products (name, description, default_price, currency_id, " +
+        String query = "INSERT INTO products (product_name, product_description, default_price, currency_id, " +
                 "category_id, supplier_id) VALUES(?, ?, ?, ?, ?, ?);";
         try {
             Connection connection = getConnection();
@@ -49,10 +50,10 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()){
-                Product product = new Product(resultSet.getString("name"),
+                Product product = new Product(resultSet.getString("product_name"),
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
-                        resultSet.getString("description"),
+                        resultSet.getString("product_description"),
                         getProductCategoryInstance(resultSet.getInt("category_id")),
                         getSupplierInstance(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
@@ -74,7 +75,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()){
                 Supplier supplier = new Supplier(resultSet.getString("supplier_name"),
-                        resultSet.getString("description"));
+                        resultSet.getString("supplier_description"));
                 supplier.setId(resultSet.getInt("id"));
                 return supplier;
             }
@@ -94,8 +95,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             if (resultSet.next()){
                 ProductCategory productCategory = new ProductCategory(
                         resultSet.getString("category_name"),
-                        resultSet.getString("department"),
-                        resultSet.getString("description"));
+                        resultSet.getString("category_department"),
+                        resultSet.getString("category_description"));
                 productCategory.setId(resultSet.getInt("id"));
                 return productCategory;
             }
@@ -128,10 +129,10 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while(resultSet.next()){
-                Product product = new Product(resultSet.getString("name"),
+                Product product = new Product(resultSet.getString("product_name"),
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
-                        resultSet.getString("description"),
+                        resultSet.getString("product_description"),
                         getProductCategoryInstance(resultSet.getInt("category_id")),
                         getSupplierInstance(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
@@ -154,10 +155,10 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(1, supplier.getId());
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
-                Product product = new Product(resultSet.getString("name"),
+                Product product = new Product(resultSet.getString("product_name"),
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
-                        resultSet.getString("description"),
+                        resultSet.getString("product_description"),
                         getProductCategoryInstance(resultSet.getInt("category_id")),
                         getSupplierInstance(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
@@ -180,10 +181,10 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(1, productCategory.getId());
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
-                Product product = new Product(resultSet.getString("name"),
+                Product product = new Product(resultSet.getString("product_name"),
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
-                        resultSet.getString("description"),
+                        resultSet.getString("product_description"),
                         getProductCategoryInstance(resultSet.getInt("category_id")),
                         getSupplierInstance(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
@@ -197,32 +198,33 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData dcd = new DatabaseConnectionData();
         return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
+                dcd.getDATABASE(),
+                dcd.getDB_USER(),
+                dcd.getDB_PASSWORD());
     }
 
-//    public static void main(String[] args){
-//
-//        // object for method testing, leave here to help test writing
-//        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
-//        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
-//        supplierExample.setId(1);
-//        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
-//                "description");
-//        productCategoryExample.setId(2);
-//        Product productExample = new Product("prod_example", 123,
-//                "USD","desc",
-//                productCategoryExample, supplierExample);
-//
-//        try {
-//            //a.add(productExample);
-//            List<Product> list = a.getAll();
-//            list.forEach(p -> System.out.println(p.getName()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("asdasdasd");
-//        }
-//    }
+    public static void main(String[] args){
+
+        // object for method testing, leave here to help test writing
+        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
+        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
+        supplierExample.setId(1);
+        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
+                "description");
+        productCategoryExample.setId(2);
+        Product productExample = new Product("prod_example", 123,
+                "USD","desc",
+                productCategoryExample, supplierExample);
+
+        try {
+            //a.add(productExample);
+            List<Product> list = a.getAll();
+            list.forEach(p -> System.out.println(p.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("asdasdasd");
+        }
+    }
 }
