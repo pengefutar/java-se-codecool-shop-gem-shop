@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface ProductDao {
 
-    void add(Product product) throws SQLException;
+    void add(Product product);
 
-    Product find(int id) throws SQLException;
+    Product find(int id);
 
-    void remove(int id) throws SQLException;
+    void remove(int id);
 
     List<Product> getAll();
 
