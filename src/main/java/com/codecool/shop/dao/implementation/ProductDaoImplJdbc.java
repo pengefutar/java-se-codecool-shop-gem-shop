@@ -49,15 +49,13 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
         String query = "INSERT INTO products (name, description, default_price, category_id, supplier_id) " +
                 "VALUES(?, ?, ?, ?, ?);";
 
-        System.out.println(product.getProductCategory().getId());   // ez az id tök más, mint ami a db-ben van, ez 0
-
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, product.getName());
         stmt.setString(2, product.getDescription());
         stmt.setFloat(3, product.getDefaultPrice());
-        stmt.setInt(4, getProductCategoryID("sport"));
-        stmt.setInt(5, 1);
+        stmt.setInt(4, getProductCategoryID(product.getProductCategory().getName()));
+        stmt.setInt(5, getSupplierID(product.getSupplier().getName()));
         executeQuery(stmt.toString());
     }
 
@@ -110,9 +108,9 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
         resultSet.getInt("id");
         if (resultSet.next()){
             System.out.println(resultSet.getInt("id"));
+            return resultSet.getInt("id");
         }
-        return new Supplier(resultSet.getString("supplier_name"),
-                resultSet.getString("description"));
+        return 0;
     }
 
     @Override
