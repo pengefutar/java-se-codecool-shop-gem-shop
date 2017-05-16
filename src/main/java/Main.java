@@ -85,9 +85,18 @@ public class Main {
 
         post("/add-product/:product-id", (req, res) -> {
             Product product = productDataStore.find(Integer.parseInt(req.params(":product-id")));
-            LineItem lineItem = new LineItem(product);
-            lineItemDataStore.add(lineItem);
-            shoppingCart.add(lineItem);
+            Boolean lineItemFound = false;
+            for (LineItem lineItem : lineItemDataStore.getAll()) {
+                if (lineItem.getProduct() == product) {
+                    lineItemFound = true;
+                    lineItem.setQuantity(lineItem.getQuantity()+1);
+                }
+            }
+            if (!lineItemFound) {
+                LineItem lineItem = new LineItem(product);
+                lineItemDataStore.add(lineItem);
+                shoppingCart.add(lineItem);
+            }
             Integer numOfLineItems = shoppingCart.getShoppingList().size();
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("numOfLineItems", numOfLineItems);

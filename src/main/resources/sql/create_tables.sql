@@ -8,20 +8,20 @@ CREATE TABLE IF NOT EXISTS Currencies (
 CREATE TABLE IF NOT EXISTS Categories (
   id SERIAL PRIMARY KEY,
   category_name VARCHAR(40),
-  department VARCHAR(255),
-  description VARCHAR(255)
+  category_department VARCHAR(255),
+  category_description VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Suppliers(
   id SERIAL PRIMARY KEY,
   supplier_name VARCHAR(40),
-  description VARCHAR(255)
+  supplier_description VARCHAR(40)
 );
 
 CREATE TABLE IF NOT EXISTS Products(
   id SERIAL PRIMARY KEY,
-  name VARCHAR(40),
-  description VARCHAR(255),
+  product_name VARCHAR(40),
+  product_description VARCHAR(255),
   default_price FLOAT,
   currency_id VARCHAR(10),
   category_id INTEGER,
