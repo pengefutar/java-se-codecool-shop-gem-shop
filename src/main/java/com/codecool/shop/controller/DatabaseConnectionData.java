@@ -1,7 +1,14 @@
 package com.codecool.shop.controller;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -9,38 +16,36 @@ import java.util.Scanner;
  */
 public class DatabaseConnectionData {
 
-    private static String filePath = "parameter.txt";
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/gem_shop";
+    private static String filePath = "src/main/resources/connection.properties";
+    private static String DB_URL;
+    private static String DB_NAME;
     private static String DB_USER;
     private static String DB_PASSWORD;
 
-    public static String getDATABASE() {
-        return DATABASE;
+    public static String getDb() {
+        setupUserAndPasswordFromFile();
+        return "jdbc:postgresql://" + DB_URL + "/" + DB_NAME;
     }
 
-    public static String getDB_USER() {
-        getUserAndPasswordFromFile();
+    public static String getDbUser(){
+        setupUserAndPasswordFromFile();
         return DB_USER;
     }
 
-    public static String getDB_PASSWORD() {
-        getUserAndPasswordFromFile();
+    public static String getDbPassword(){
+        setupUserAndPasswordFromFile();
         return DB_PASSWORD;
     }
 
-    private static void getUserAndPasswordFromFile() {
-
-        String content = "";
+    private static void setupUserAndPasswordFromFile() {
         try {
-            content = new Scanner(new File(filePath)).useDelimiter("\\Z").next();
+            List<String> allLinesList = Files.readAllLines(Paths.get(filePath));
+            DB_URL = allLinesList.get(0);
+            DB_NAME = allLinesList.get(1);
+            DB_USER = allLinesList.get(2);
+            DB_PASSWORD = allLinesList.get(3);
+        } catch (IOException e){
+            System.out.println("Cant read from config fole");
         }
-        catch (IOException e) {
-            System.out.println("Please make a parameter.txt file " +
-                    "following the instructions in parameter_template.txt");
-        }
-
-        String userAndPass[] = content.split(";");
-        DB_USER = userAndPass[0];
-        DB_PASSWORD = userAndPass[1];
     }
 }
