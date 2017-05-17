@@ -12,13 +12,13 @@ CREATE TABLE IF NOT EXISTS Categories (
   category_description VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS Suppliers(
+CREATE TABLE IF NOT EXISTS Suppliers (
   id SERIAL PRIMARY KEY,
   supplier_name VARCHAR(40),
   supplier_description VARCHAR(40)
 );
 
-CREATE TABLE IF NOT EXISTS Products(
+CREATE TABLE IF NOT EXISTS Products (
   id SERIAL PRIMARY KEY,
   product_name VARCHAR(40),
   product_description VARCHAR(255),
@@ -31,12 +31,12 @@ CREATE TABLE IF NOT EXISTS Products(
   FOREIGN KEY (supplier_id) REFERENCES Suppliers(id)
 );
 
-CREATE TABLE IF NOT EXISTS Order_status(
+CREATE TABLE IF NOT EXISTS Order_status (
   id SERIAL PRIMARY KEY,
   status_name VARCHAR(40)
 );
 
-CREATE TABLE IF NOT EXISTS Addresses(
+CREATE TABLE IF NOT EXISTS Addresses (
   id SERIAL PRIMARY KEY,
   country VARCHAR(100),
   city VARCHAR(100),
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Addresses(
   zip VARCHAR(10)
 );
 
-CREATE TABLE IF NOT EXISTS Orders(
+CREATE TABLE IF NOT EXISTS Orders (
   id SERIAL PRIMARY KEY,
   status_id SERIAL,
   address_id SERIAL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS Orders(
   FOREIGN KEY (address_id) REFERENCES Addresses(id)
 );
 
-CREATE TABLE IF NOT EXISTS Line_items(
+CREATE TABLE IF NOT EXISTS Line_items (
   id SERIAL PRIMARY KEY,
   product_id SERIAL,
   quantity INTEGER,
