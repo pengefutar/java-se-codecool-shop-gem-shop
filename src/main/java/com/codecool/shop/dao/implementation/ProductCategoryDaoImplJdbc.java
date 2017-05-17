@@ -3,7 +3,6 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,8 +46,9 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
             if (resultSet.next()){
                 ProductCategory category = new ProductCategory(
                         resultSet.getString("category_name"),
-                        resultSet.getString("category-department"),
+                        resultSet.getString("category_department"),
                         resultSet.getString("category_description"));
+                category.setId(resultSet.getInt("id"));
                 return category;
             }
             return null;

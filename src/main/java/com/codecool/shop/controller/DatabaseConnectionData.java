@@ -46,9 +46,4 @@ public class DatabaseConnectionData {
             System.out.println("Cant read from config file");
         }
     }
-
-    public static void main(String[] args) {
-        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
-        System.out.println(DatabaseConnectionData.getDb());
-    }
 }
