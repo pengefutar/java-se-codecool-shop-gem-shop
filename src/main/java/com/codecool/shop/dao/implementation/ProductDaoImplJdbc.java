@@ -198,6 +198,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
         return DriverManager.getConnection(
                 DatabaseConnectionData.getDb(),
                 DatabaseConnectionData.getDbUser(),

@@ -97,6 +97,7 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
         return DriverManager.getConnection(
                 DatabaseConnectionData.getDb(),
                 DatabaseConnectionData.getDbUser(),

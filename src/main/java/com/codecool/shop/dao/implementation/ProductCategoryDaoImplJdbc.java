@@ -103,6 +103,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
         return DriverManager.getConnection(
                 DatabaseConnectionData.getDb(),
                 DatabaseConnectionData.getDbUser(),

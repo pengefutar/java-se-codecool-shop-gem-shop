@@ -93,7 +93,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
 
     @Override
     Connection getConnection() throws SQLException {
-        DatabaseConnectionData dcd = new DatabaseConnectionData();
+        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
         return DriverManager.getConnection(
                 DatabaseConnectionData.getDb(),
                 DatabaseConnectionData.getDbUser(),

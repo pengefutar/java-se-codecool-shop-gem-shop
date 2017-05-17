@@ -16,36 +16,39 @@ import java.util.Scanner;
  */
 public class DatabaseConnectionData {
 
-    private static String filePath = "src/main/resources/connection.properties";
+    private static String filePath = "src/main/resources/";
     private static String DB_URL;
     private static String DB_NAME;
     private static String DB_USER;
     private static String DB_PASSWORD;
 
+
     public static String getDb() {
-        setupUserAndPasswordFromFile();
         return "jdbc:postgresql://" + DB_URL + "/" + DB_NAME;
     }
 
     public static String getDbUser(){
-        setupUserAndPasswordFromFile();
         return DB_USER;
     }
 
     public static String getDbPassword(){
-        setupUserAndPasswordFromFile();
         return DB_PASSWORD;
     }
 
-    private static void setupUserAndPasswordFromFile() {
+    public static void setupUserAndPasswordFromFile(String fileName) {
         try {
-            List<String> allLinesList = Files.readAllLines(Paths.get(filePath));
+            List<String> allLinesList = Files.readAllLines(Paths.get(filePath + fileName));
             DB_URL = allLinesList.get(0);
             DB_NAME = allLinesList.get(1);
             DB_USER = allLinesList.get(2);
             DB_PASSWORD = allLinesList.get(3);
         } catch (IOException e){
-            System.out.println("Cant read from config fole");
+            System.out.println("Cant read from config file");
         }
+    }
+
+    public static void main(String[] args) {
+        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
+        System.out.println(DatabaseConnectionData.getDb());
     }
 }
