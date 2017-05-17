@@ -95,9 +95,9 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
     Connection getConnection() throws SQLException {
         DatabaseConnectionData dcd = new DatabaseConnectionData();
         return DriverManager.getConnection(
-                dcd.getDATABASE(),
-                dcd.getDB_USER(),
-                dcd.getDB_PASSWORD());
+                DatabaseConnectionData.getDb(),
+                DatabaseConnectionData.getDbUser(),
+                DatabaseConnectionData.getDbPassword());
     }
 
     public static void main(String[] args) throws SQLException {

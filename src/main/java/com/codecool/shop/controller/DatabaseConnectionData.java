@@ -22,14 +22,9 @@ public class DatabaseConnectionData {
     private static String DB_USER;
     private static String DB_PASSWORD;
 
-    public static String getDbUrl() {
+    public static String getDb() {
         setupUserAndPasswordFromFile();
-        return DB_URL;
-    }
-
-    public static String getDbName() {
-        setupUserAndPasswordFromFile();
-        return DB_NAME;
+        return "jdbc:postgresql://" + DB_URL + "/" + DB_NAME;
     }
 
     public static String getDbUser(){
@@ -52,12 +47,5 @@ public class DatabaseConnectionData {
         } catch (IOException e){
             System.out.println("Cant read from config fole");
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(DatabaseConnectionData.getDbName());
-        System.out.println(DatabaseConnectionData.getDbPassword());
-        System.out.println(DatabaseConnectionData.getDbUrl());
-        System.out.println(DatabaseConnectionData.getDbUser());
     }
 }

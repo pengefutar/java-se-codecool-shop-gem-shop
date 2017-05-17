@@ -5,6 +5,7 @@ import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.LineItemDao;
 import com.codecool.shop.model.LineItem;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,11 +97,10 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
 
     @Override
     Connection getConnection() throws SQLException {
-        DatabaseConnectionData dcd = new DatabaseConnectionData();
         return DriverManager.getConnection(
-                dcd.getDATABASE(),
-                dcd.getDB_USER(),
-                dcd.getDB_PASSWORD());
+                DatabaseConnectionData.getDb(),
+                DatabaseConnectionData.getDbUser(),
+                DatabaseConnectionData.getDbPassword());
     }
 }
 
