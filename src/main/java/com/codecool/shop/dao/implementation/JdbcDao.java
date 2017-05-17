@@ -8,6 +8,7 @@ import java.sql.Statement;
 /**
  * Created by marti on 2017.05.15..
  */
+
 public abstract class JdbcDao {
 
 

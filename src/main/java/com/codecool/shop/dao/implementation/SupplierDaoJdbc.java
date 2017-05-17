@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
 
@@ -11,10 +12,6 @@ import java.util.List;
  * Created by marti on 2017.05.15..
  */
 public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
-
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/gem_shop";
-    private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "postgres";
 
     @Override
     public void add(Supplier supplier) {
@@ -96,10 +93,11 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData dcd = new DatabaseConnectionData();
         return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
+                dcd.getDATABASE(),
+                dcd.getDB_USER(),
+                dcd.getDB_PASSWORD());
     }
 
     public static void main(String[] args) throws SQLException {

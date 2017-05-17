@@ -1,0 +1,3 @@
+Please create a parameter.txt file in this directory
+with the following data format in the first line:
+yourDatabaseUserName;yourPassword
