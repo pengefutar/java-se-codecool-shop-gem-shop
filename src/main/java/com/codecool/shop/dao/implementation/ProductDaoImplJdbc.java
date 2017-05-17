@@ -112,7 +112,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
         ProductCategoryDaoImplJdbc productCategoryDaoImplJdbc = new ProductCategoryDaoImplJdbc();
         List<Product> productList = new ArrayList<>();
         String query = "SELECT * FROM products WHERE supplier_id = ?;";
-        SupplierDaoJdbc supplierDaoJdbc = new SupplierDaoJdbc();
 
         try {
             Connection connection = getConnection();
@@ -125,7 +124,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("product_description"),
                         productCategoryDaoImplJdbc.find(resultSet.getInt("category_id")),
-                        supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
+                        supplier);
                 product.setId(resultSet.getInt("id"));
                 productList.add(product);
             }
@@ -137,7 +136,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
-        ProductCategoryDaoImplJdbc productCategoryDaoImplJdbc = new ProductCategoryDaoImplJdbc();
         List<Product> productListByCategory = new ArrayList<>();
         SupplierDaoJdbc supplierDaoJdbc = new SupplierDaoJdbc();
         String query = "SELECT * FROM products WHERE category_id = ?;";
@@ -152,7 +150,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("product_description"),
-                        productCategoryDaoImplJdbc.find(resultSet.getInt("category_id")),
+                        productCategory,
                         supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
                 productListByCategory.add(product);
