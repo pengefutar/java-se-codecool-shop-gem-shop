@@ -17,51 +17,47 @@ import java.util.Scanner;
 public class DatabaseConnectionData {
 
     private static String filePath = "src/main/resources/connection.properties";
-    private static String DB_URL = "jdbc:postgresql://localhost:5432/gem_shop";
+    private static String DB_URL;
     private static String DB_NAME;
     private static String DB_USER;
     private static String DB_PASSWORD;
 
-    public static String getDATABASE() {
+    public static String getDbUrl() {
+        setupUserAndPasswordFromFile();
         return DB_URL;
     }
 
-    public static String getDB_USER(){
-        try {
-            getUserAndPasswordFromFile();
-            return DB_USER;
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
+    public static String getDbName() {
+        setupUserAndPasswordFromFile();
+        return DB_NAME;
     }
 
-    public static String getDB_PASSWORD(){
-        try {
-            getUserAndPasswordFromFile();
-            return DB_PASSWORD;
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+    public static String getDbUser(){
+        setupUserAndPasswordFromFile();
+        return DB_USER;
+    }
+
+    public static String getDbPassword(){
+        setupUserAndPasswordFromFile();
         return DB_PASSWORD;
     }
 
-    private static void getUserAndPasswordFromFile() throws IOException {
-        StringBuilder content = new StringBuilder();
-        List<String> allLinesList = Arrays.asList(Files.readAllLines(Paths.get(filePath)).
-                toString().split("\n"));
-
-        allLinesList.forEach(word -> content.append(word));
-        System.out.println(content);
-
-        DB_URL = allLinesList.get(0);
-        DB_NAME = allLinesList.get(1);
-        DB_USER = allLinesList.get(2);
-        DB_PASSWORD = allLinesList.get(3);
+    private static void setupUserAndPasswordFromFile() {
+        try {
+            List<String> allLinesList = Files.readAllLines(Paths.get(filePath));
+            DB_URL = allLinesList.get(0);
+            DB_NAME = allLinesList.get(1);
+            DB_USER = allLinesList.get(2);
+            DB_PASSWORD = allLinesList.get(3);
+        } catch (IOException e){
+            System.out.println("Cant read from config fole");
+        }
     }
 
-    public static void main(String[] args) throws IOException {
-        DatabaseConnectionData.getUserAndPasswordFromFile();
-
+    public static void main(String[] args) {
+        System.out.println(DatabaseConnectionData.getDbName());
+        System.out.println(DatabaseConnectionData.getDbPassword());
+        System.out.println(DatabaseConnectionData.getDbUrl());
+        System.out.println(DatabaseConnectionData.getDbUser());
     }
 }
