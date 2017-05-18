@@ -42,6 +42,7 @@ public class SupplierDaoTest {
         while (iter.hasNext()) {
             Supplier supplier = iter.next();
             iter.remove();
+            supplierDao.remove(supplier.getId());
         }
     }
 
