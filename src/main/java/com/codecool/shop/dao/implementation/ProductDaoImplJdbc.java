@@ -43,6 +43,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     public Product find(int id) {
+        ProductCategoryDaoImplJdbc productCategoryDaoImplJdbc = new ProductCategoryDaoImplJdbc();
+        SupplierDaoJdbc supplierDaoJdbc = new SupplierDaoJdbc();
         String query = "SELECT * FROM products WHERE id = ?;";
         try {
             Connection connection = getConnection();
@@ -54,8 +56,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("product_description"),
-                        getProductCategoryInstance(resultSet.getInt("category_id")),
-                        getSupplierInstance(resultSet.getInt("supplier_id")));
+                        productCategoryDaoImplJdbc.find(resultSet.getInt("category_id")),
+                        supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
                 return product;
             }
@@ -65,47 +67,6 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
         return null;
     }
-
-    public Supplier getSupplierInstance(int id) {
-        String query = "SELECT * FROM suppliers WHERE id = ?;";
-        try{
-            Connection connection = getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, id);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()){
-                Supplier supplier = new Supplier(resultSet.getString("supplier_name"),
-                        resultSet.getString("supplier_description"));
-                supplier.setId(resultSet.getInt("id"));
-                return supplier;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public ProductCategory getProductCategoryInstance(int id) {
-        String query = "SELECT * FROM categories WHERE id = ?;";
-        try {
-            Connection connection = getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, id);
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()){
-                ProductCategory productCategory = new ProductCategory(
-                        resultSet.getString("category_name"),
-                        resultSet.getString("category_department"),
-                        resultSet.getString("category_description"));
-                productCategory.setId(resultSet.getInt("id"));
-                return productCategory;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 
     @Override
     public void remove(int id){
@@ -121,7 +82,9 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
     }
 
     public List<Product> getAll() {
+        ProductCategoryDaoImplJdbc productCategoryDaoImplJdbc = new ProductCategoryDaoImplJdbc();
         List<Product> productList = new ArrayList<>();
+        SupplierDaoJdbc supplierDaoJdbc = new SupplierDaoJdbc();
 
         String query = "SELECT * from products;";
         try {
@@ -133,8 +96,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("product_description"),
-                        getProductCategoryInstance(resultSet.getInt("category_id")),
-                        getSupplierInstance(resultSet.getInt("supplier_id")));
+                        productCategoryDaoImplJdbc.find(resultSet.getInt("category_id")),
+                        supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
                 productList.add(product);
             }
@@ -146,6 +109,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     public List<Product> getBy(Supplier supplier) {
+        ProductCategoryDaoImplJdbc productCategoryDaoImplJdbc = new ProductCategoryDaoImplJdbc();
         List<Product> productList = new ArrayList<>();
         String query = "SELECT * FROM products WHERE supplier_id = ?;";
 
@@ -159,8 +123,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("product_description"),
-                        getProductCategoryInstance(resultSet.getInt("category_id")),
-                        getSupplierInstance(resultSet.getInt("supplier_id")));
+                        productCategoryDaoImplJdbc.find(resultSet.getInt("category_id")),
+                        supplier);
                 product.setId(resultSet.getInt("id"));
                 productList.add(product);
             }
@@ -173,6 +137,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
         List<Product> productListByCategory = new ArrayList<>();
+        SupplierDaoJdbc supplierDaoJdbc = new SupplierDaoJdbc();
         String query = "SELECT * FROM products WHERE category_id = ?;";
 
         try {
@@ -185,8 +150,8 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         resultSet.getFloat("default_price"),
                         Currency.getInstance(resultSet.getString("currency_id")).getCurrencyCode(),
                         resultSet.getString("product_description"),
-                        getProductCategoryInstance(resultSet.getInt("category_id")),
-                        getSupplierInstance(resultSet.getInt("supplier_id")));
+                        productCategory,
+                        supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
                 productListByCategory.add(product);
             }
@@ -198,32 +163,10 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("connection.properties");
         return DriverManager.getConnection(
-                DatabaseConnectionData.getDb(),
-                DatabaseConnectionData.getDbUser(),
-                DatabaseConnectionData.getDbPassword());
+                dbConn.getDb(),
+                dbConn.getDbUser(),
+                dbConn.getDbPassword());
     }
-
-//    public static void main(String[] args){
-//
-//        // object for method testing, leave here to help test writing
-//        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
-//        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
-//        supplierExample.setId(1);
-//        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
-//                "description");
-//        productCategoryExample.setId(2);
-//        Product productExample = new Product("prod_example", 123,
-//                "USD","desc",
-//                productCategoryExample, supplierExample);
-//
-//        try {
-//            //a.add(productExample);
-//            List<Product> list = a.getBy(supplierExample);
-//            list.forEach(p -> System.out.println(p.getName()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("asdasdasd");
-//        }
-//    }
 }
