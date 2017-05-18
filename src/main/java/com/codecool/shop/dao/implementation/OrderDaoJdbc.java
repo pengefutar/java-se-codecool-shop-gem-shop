@@ -125,11 +125,11 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
 
     @Override
     Connection getConnection() throws SQLException {
-        DatabaseConnectionData dcd = new DatabaseConnectionData();
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("connection.properties");
         return DriverManager.getConnection(
-                dcd.getDATABASE(),
-                dcd.getDB_USER(),
-                dcd.getDB_PASSWORD());
+                dbConn.getDb(),
+                dbConn.getDbUser(),
+                dbConn.getDbPassword());
     }
 
 //    public static void main(String[] args) throws SQLException {

@@ -15,18 +15,22 @@ public class DatabaseConnectionDataTest {
 
     @Test
     public void testConnectToTheDbWithValidUser() throws SQLException{
-        DatabaseConnectionData.setupUserAndPasswordFromFile("testConnection.properties");
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("testConnection.properties");
         Connection connection = DriverManager.getConnection(
-                DatabaseConnectionData.getDb(),
-                DatabaseConnectionData.getDbUser(),
-                DatabaseConnectionData.getDbPassword());
-        assertEquals(4, 4);
+                dbConn.getDb(),
+                dbConn.getDbUser(),
+                dbConn.getDbPassword());
     }
 
     @Test
     public void testConnectToDbWithInvalidUser() throws SQLException {
-        boolean isValid = DatabaseConnectionData.setupUserAndPasswordFromFile("testConnectionFake.properties");
-        assertFalse(isValid);
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("testConnectionFake.properties");
+        assertThrows(SQLException.class, () -> {
+            Connection connection = DriverManager.getConnection(
+                    dbConn.getDb(),
+                    dbConn.getDbUser(),
+                    dbConn.getDbPassword());
+        });
     }
 
 }

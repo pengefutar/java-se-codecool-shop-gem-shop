@@ -163,16 +163,16 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
     @Override
     Connection getConnection() throws SQLException {
-        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("connection.properties");
         return DriverManager.getConnection(
-                DatabaseConnectionData.getDb(),
-                DatabaseConnectionData.getDbUser(),
-                DatabaseConnectionData.getDbPassword());
+                dbConn.getDb(),
+                dbConn.getDbUser(),
+                dbConn.getDbPassword());
     }
 
 //    public static void main(String[] args){
 //
-//        // object for method testing, leave here to help test writing
+        // object for method testing, leave here to help test writing
 //        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
 //        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
 //        supplierExample.setId(1);
@@ -184,7 +184,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 //                productCategoryExample, supplierExample);
 //
 //        try {
-//            //a.add(productExample);
+//            a.add(productExample);
 //            List<Product> list = a.getBy(supplierExample);
 //            list.forEach(p -> System.out.println(p.getName()));
 //        } catch (Exception e) {

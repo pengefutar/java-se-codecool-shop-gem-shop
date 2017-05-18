@@ -97,11 +97,17 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
 
     @Override
     Connection getConnection() throws SQLException {
-        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
+        DatabaseConnectionData conn = new DatabaseConnectionData("testConnectionFake.properties");
         return DriverManager.getConnection(
-                DatabaseConnectionData.getDb(),
-                DatabaseConnectionData.getDbUser(),
-                DatabaseConnectionData.getDbPassword());
+                conn.getDb(),
+                conn.getDbUser(),
+                conn.getDbPassword());
+    }
+
+    public static void main(String[] args) {
+        LineItemDaoImplJdbc a = new LineItemDaoImplJdbc();
+        List<LineItem> list = a.getAll();
+        list.forEach(p -> System.out.println(p.getPrice()));
     }
 }
 

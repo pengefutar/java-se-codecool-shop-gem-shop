@@ -93,22 +93,21 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
 
     @Override
     Connection getConnection() throws SQLException {
-        DatabaseConnectionData.setupUserAndPasswordFromFile("connection.properties");
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("connection.properties");
         return DriverManager.getConnection(
-                DatabaseConnectionData.getDb(),
-                DatabaseConnectionData.getDbUser(),
-                DatabaseConnectionData.getDbPassword());
+                dbConn.getDb(),
+                dbConn.getDbUser(),
+                dbConn.getDbPassword());
     }
 
-    public static void main(String[] args) throws SQLException {
-        SupplierDaoJdbc shop = new SupplierDaoJdbc();
-        Supplier supplier = new Supplier("jh","gj");
-        shop.add(supplier);
-        System.out.println(shop.find(2));
-        shop.remove(2);
-        System.out.println(shop.getAll());
-    }
-
+//    public static void main(String[] args) throws SQLException {
+//        SupplierDaoJdbc shop = new SupplierDaoJdbc();
+//        Supplier supplier = new Supplier("jh","gj");
+//        shop.add(supplier);
+//        System.out.println(shop.find(2));
+//        shop.remove(2);
+//        System.out.println(shop.getAll());
+//    }
 }
 
 
