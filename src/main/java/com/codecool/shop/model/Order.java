@@ -22,6 +22,7 @@ public class Order extends BaseModel implements Orderable {
 
     public Order(String name, List<LineItem> lineItemList) {
         super(name);
+        this.status = OrderStatus.NEW;
         this.lineItemList = lineItemList;
     }
 

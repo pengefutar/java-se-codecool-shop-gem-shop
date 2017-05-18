@@ -31,7 +31,20 @@ CREATE TABLE IF NOT EXISTS Products(
   FOREIGN KEY (supplier_id) REFERENCES Suppliers(id)
 );
 
-CREATE TYPE Order_status AS ENUM ('new', 'hold', 'paid', 'shipped', 'delivered', 'closed');
+CREATE TABLE IF NOT EXISTS Order_status(
+  --id SERIAL PRIMARY KEY,
+  status_name  VARCHAR(40) PRIMARY KEY
+);
+
+INSERT INTO Order_status(status_name) VALUES ('new');
+INSERT INTO Order_status(status_name) VALUES ('hold');
+INSERT INTO Order_status(status_name) VALUES ('paid');
+INSERT INTO Order_status(status_name) VALUES ('shipped');
+INSERT INTO Order_status(status_name) VALUES ('delivered');
+INSERT INTO Order_status(status_name) VALUES ('closed');
+
+INSERT INTO Currencies VALUES('USD');
+INSERT INTO Currencies VALUES('EUR');
 
 CREATE TABLE IF NOT EXISTS Addresses(
   id SERIAL PRIMARY KEY,
@@ -43,9 +56,9 @@ CREATE TABLE IF NOT EXISTS Addresses(
 
 CREATE TABLE IF NOT EXISTS Orders(
   id SERIAL PRIMARY KEY,
-  order_name VARCHAR(40),
-  status Order_status,
   address_id SERIAL,
+  status_name VARCHAR(40),
+  FOREIGN KEY (status_name) REFERENCES Order_status(status_name),
   FOREIGN KEY (address_id) REFERENCES Addresses(id)
 );
 
@@ -58,3 +71,4 @@ CREATE TABLE IF NOT EXISTS Line_items(
   FOREIGN KEY (product_id) REFERENCES Products(id),
   FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
+

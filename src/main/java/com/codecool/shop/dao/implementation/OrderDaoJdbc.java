@@ -18,19 +18,18 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
 
     @Override
     public void add(Order order) {
-        String query = "INSERT INTO orders (order_name, status) " +
-                "VALUES(?, ?);";
+        String query = "INSERT INTO orders (status_name" +
+                ") " +
+                "VALUES(?);";
 
         try {
             Connection connection = getConnection();
-            System.out.println(order.getStatus());
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, order.getName());
-            stmt.setString(2, String.valueOf(order.getStatus()));
-            executeQuery(stmt.toString());
+            stmt.setString(1, order.getStatus().getValue());
+            stmt.executeQuery();
         }
         catch (SQLException e) {
-            System.out.println("LineItem could not be added to the database.");
+            e.printStackTrace();
         }
     }
 
@@ -92,7 +91,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             for(LineItem lineItem : lineItems) {
             lineItemJdbc.remove(lineItem.getId());
             }
-            executeQuery(stmt.toString());
+            stmt.executeUpdate();
 
         }
         catch (SQLException e) {
@@ -148,9 +147,8 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
         List<LineItem> lineItemListExample = new ArrayList<>();
         lineItemListExample.add(lineItemOne);
         lineItemListExample.add(lineItemTwo);
-        Order order = new Order("jh",lineItemListExample);
-
-        Order orderTwo = new Order("kh",lineItemListExample);
+        Order order = new Order("jh", lineItemListExample);
+        Order orderTwo = new Order("kh", lineItemListExample);
         shop.add(order);
         System.out.println(shop.find(2));
         shop.remove(1);
