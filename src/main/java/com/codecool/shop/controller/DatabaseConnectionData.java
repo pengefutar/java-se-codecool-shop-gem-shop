@@ -16,36 +16,39 @@ import java.util.Scanner;
  */
 public class DatabaseConnectionData {
 
-    private static String filePath = "src/main/resources/connection.properties";
-    private static String DB_URL;
-    private static String DB_NAME;
-    private static String DB_USER;
-    private static String DB_PASSWORD;
+    private String filePath = "src/main/resources/";
+    private String DB_URL;
+    private String DB_NAME;
+    private String DB_USER;
+    private String DB_PASSWORD;
 
-    public static String getDb() {
-        setupUserAndPasswordFromFile();
+    public DatabaseConnectionData(String filePath){
+        try {
+            setupUserAndPasswordFromFile(filePath);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getDb() {
         return "jdbc:postgresql://" + DB_URL + "/" + DB_NAME;
     }
 
-    public static String getDbUser(){
-        setupUserAndPasswordFromFile();
+    public String getDbUser(){
         return DB_USER;
     }
 
-    public static String getDbPassword(){
-        setupUserAndPasswordFromFile();
+    public String getDbPassword(){
         return DB_PASSWORD;
     }
 
-    private static void setupUserAndPasswordFromFile() {
-        try {
-            List<String> allLinesList = Files.readAllLines(Paths.get(filePath));
-            DB_URL = allLinesList.get(0);
-            DB_NAME = allLinesList.get(1);
-            DB_USER = allLinesList.get(2);
-            DB_PASSWORD = allLinesList.get(3);
-        } catch (IOException e){
-            System.out.println("Cant read from config fole");
-        }
+    private void setupUserAndPasswordFromFile(String fileName) throws IOException{
+        List<String> allLinesList = Files.readAllLines(Paths.get(filePath + fileName));
+        DB_URL = allLinesList.get(0);
+        DB_NAME = allLinesList.get(1);
+        DB_USER = allLinesList.get(2);
+        DB_PASSWORD = allLinesList.get(3);
     }
 }
+

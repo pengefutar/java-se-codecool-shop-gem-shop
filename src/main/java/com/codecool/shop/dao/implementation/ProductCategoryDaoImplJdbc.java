@@ -3,8 +3,8 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
                         resultSet.getString("category_name"),
                         resultSet.getString("category_department"),
                         resultSet.getString("category_description"));
+                category.setId(resultSet.getInt("id"));
                 return category;
             }
             return null;
@@ -103,10 +104,11 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
 
     @Override
     Connection getConnection() throws SQLException {
+        DatabaseConnectionData dbConn = new DatabaseConnectionData("connection.properties");
         return DriverManager.getConnection(
-                DatabaseConnectionData.getDb(),
-                DatabaseConnectionData.getDbUser(),
-                DatabaseConnectionData.getDbPassword());
+                dbConn.getDb(),
+                dbConn.getDbUser(),
+                dbConn.getDbPassword());
     }
 }
 

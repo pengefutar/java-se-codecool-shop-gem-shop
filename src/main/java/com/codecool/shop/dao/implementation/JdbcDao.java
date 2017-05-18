@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
