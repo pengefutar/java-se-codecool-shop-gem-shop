@@ -21,7 +21,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, supplier.getName());
             stmt.setString(2, supplier.getDescription());
-            executeQuery(stmt.toString());
+            stmt.executeQuery();
         }
         catch (SQLException e) {
             System.out.println("Supplier could not be added to the database.");
@@ -63,7 +63,6 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
         stmt.setInt(1, id);
         stmt.executeQuery();}
         catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Could not remove supplier from database.");
         }
 

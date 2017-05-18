@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS Suppliers (
   supplier_name VARCHAR(40),
   supplier_description VARCHAR(40)
 );
---ALTER SEQUENCE suppliers_id_seq RESTART WITH 1 INCREMENT BY 1;
 
 CREATE TABLE IF NOT EXISTS Products (
   id SERIAL PRIMARY KEY,
