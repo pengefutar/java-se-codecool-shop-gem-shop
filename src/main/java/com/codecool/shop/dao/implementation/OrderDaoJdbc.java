@@ -132,28 +132,28 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
                 dcd.getDB_PASSWORD());
     }
 
-    public static void main(String[] args) throws SQLException {
-        OrderDaoJdbc shop = new OrderDaoJdbc();
-        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
-        supplierExample.setId(1);
-        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
-                "description");
-        productCategoryExample.setId(2);
-        Product productExample = new Product("prod_example", 123,
-                "USD","desc",
-                productCategoryExample, supplierExample);
-        LineItem lineItemOne = new LineItem(productExample);
-        LineItem lineItemTwo = new LineItem(productExample);
-        List<LineItem> lineItemListExample = new ArrayList<>();
-        lineItemListExample.add(lineItemOne);
-        lineItemListExample.add(lineItemTwo);
-        Order order = new Order("jh", lineItemListExample);
-        Order orderTwo = new Order("kh", lineItemListExample);
-        shop.add(order);
-        System.out.println(shop.find(2));
-        shop.remove(1);
-        System.out.println(shop.getAll());
-    }
+//    public static void main(String[] args) throws SQLException {
+//        OrderDaoJdbc shop = new OrderDaoJdbc();
+//        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
+//        supplierExample.setId(1);
+//        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
+//                "description");
+//        productCategoryExample.setId(2);
+//        Product productExample = new Product("prod_example", 123,
+//                "USD","desc",
+//                productCategoryExample, supplierExample);
+//        LineItem lineItemOne = new LineItem(productExample);
+//        LineItem lineItemTwo = new LineItem(productExample);
+//        List<LineItem> lineItemListExample = new ArrayList<>();
+//        lineItemListExample.add(lineItemOne);
+//        lineItemListExample.add(lineItemTwo);
+//        Order order = new Order("jh", lineItemListExample);
+//        Order orderTwo = new Order("kh", lineItemListExample);
+//        shop.add(order);
+//        System.out.println(shop.find(2));
+//        shop.remove(1);
+//        System.out.println(shop.getAll());
+//    }
 
 
 }
