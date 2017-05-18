@@ -20,6 +20,12 @@ public class Order extends BaseModel implements Orderable {
         super(name);
     }
 
+    public Order(String name, List<LineItem> lineItemList) {
+        super(name);
+        this.status = OrderStatus.NEW;
+        this.lineItemList = lineItemList;
+    }
+
     public Order(String name, Address address, List<LineItem> lineItemList) {
         super(name);
         this.id = counter;
@@ -27,6 +33,10 @@ public class Order extends BaseModel implements Orderable {
         this.address = address;
         this.status = OrderStatus.NEW;
         this.lineItemList = lineItemList;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     public OrderStatus getStatus() {

@@ -32,9 +32,19 @@ CREATE TABLE IF NOT EXISTS Products(
 );
 
 CREATE TABLE IF NOT EXISTS Order_status(
-  id SERIAL PRIMARY KEY,
-  status_name VARCHAR(40)
+  --id SERIAL PRIMARY KEY,
+  status_name  VARCHAR(40) PRIMARY KEY
 );
+
+INSERT INTO Order_status(status_name) VALUES ('new');
+INSERT INTO Order_status(status_name) VALUES ('hold');
+INSERT INTO Order_status(status_name) VALUES ('paid');
+INSERT INTO Order_status(status_name) VALUES ('shipped');
+INSERT INTO Order_status(status_name) VALUES ('delivered');
+INSERT INTO Order_status(status_name) VALUES ('closed');
+
+INSERT INTO Currencies VALUES('USD');
+INSERT INTO Currencies VALUES('EUR');
 
 CREATE TABLE IF NOT EXISTS Addresses(
   id SERIAL PRIMARY KEY,
@@ -46,9 +56,9 @@ CREATE TABLE IF NOT EXISTS Addresses(
 
 CREATE TABLE IF NOT EXISTS Orders(
   id SERIAL PRIMARY KEY,
-  status_id SERIAL,
   address_id SERIAL,
-  FOREIGN KEY (status_id) REFERENCES Order_status(id),
+  status_name VARCHAR(40),
+  FOREIGN KEY (status_name) REFERENCES Order_status(status_name),
   FOREIGN KEY (address_id) REFERENCES Addresses(id)
 );
 
