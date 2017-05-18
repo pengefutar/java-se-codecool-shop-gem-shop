@@ -21,9 +21,11 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, supplier.getName());
             stmt.setString(2, supplier.getDescription());
-            stmt.executeQuery();
+            executeQuery(stmt.toString());
+            connection.close();
         }
         catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("Supplier could not be added to the database.");
         }
 
@@ -45,6 +47,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
                 supplier.setId(id);
         return supplier;
         }
+        connection.close();
         return null;
         }
         catch (SQLException e) {
@@ -61,7 +64,8 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, id);
-        stmt.executeQuery();}
+        executeQuery(stmt.toString());
+        connection.close();}
         catch (SQLException e) {
             System.out.println("Could not remove supplier from database.");
         }
@@ -86,6 +90,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
             supplier.setId(dbId);
             results.add(supplier);
         }
+        connection.close();
         return results;}
         catch (SQLException e) {
             return null;
@@ -100,6 +105,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
                 dbConn.getDbUser(),
                 dbConn.getDbPassword());
     }
+
 }
 
 

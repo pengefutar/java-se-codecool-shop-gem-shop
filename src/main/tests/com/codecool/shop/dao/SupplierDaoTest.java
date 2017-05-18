@@ -37,12 +37,11 @@ public class SupplierDaoTest {
 
     @AfterEach
     public void cleanUp(SupplierDao supplierDao){
-        System.out.println("cleanup!!");
         int numOfLines = supplierDao.getAll().size();
         Iterator<Supplier> iter = supplierDao.getAll().iterator();
         while (iter.hasNext()) {
             Supplier supplier = iter.next();
-            supplierDao.remove(supplier.getId());
+            iter.remove();
         }
     }
 
@@ -61,13 +60,12 @@ public class SupplierDaoTest {
         supplierDao.add(testSupplier);
         int id = supplierDao.getAll().get(0).getId();
         testSupplier.setId(id);
-        assertEquals(testSupplier, supplierDao.find(id));
+        assertEquals(testSupplier.getId(), supplierDao.find(id).getId());
     }
 
     @ParameterizedTest
     @MethodSource(names = "daoAndSupplierProvider")
     public void testingRemove(SupplierDao supplierDao, Supplier testSupplier) {
-        testSupplier.setId(1);
         int numOfItems = supplierDao.getAll().size();
         supplierDao.add(testSupplier);
         int id = supplierDao.getAll().get(0).getId();
@@ -80,12 +78,13 @@ public class SupplierDaoTest {
     @MethodSource(names = "daoAndSupplierProvider")
     public void testingGetAll(SupplierDao supplierDao, Supplier testSupplier) {
         List<Supplier> testList = new ArrayList<>();
-        for (int i=0; i<5; i++) {
-            testList.add(testSupplier);
+        for (int i=0; i<supplierDao.getAll().size(); i++) {
+            Supplier supplier = new Supplier("test_name","test_desc");
             int id = supplierDao.getAll().get(i).getId();
-            testSupplier.setId(id);
-            supplierDao.add(testSupplier);
+            supplier.setId(id);
+            testList.add(supplier);
         }
-        assertEquals(testList, supplierDao.getAll());
+        for (int i=0; i < supplierDao.getAll().size(); i++) {
+        assertEquals(testList.get(i).getId(), supplierDao.getAll().get(i).getId());}
     }
 }
