@@ -4,6 +4,7 @@ import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

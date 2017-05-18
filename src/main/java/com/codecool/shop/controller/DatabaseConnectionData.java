@@ -35,15 +35,17 @@ public class DatabaseConnectionData {
         return DB_PASSWORD;
     }
 
-    public static void setupUserAndPasswordFromFile(String fileName) {
+    public static boolean setupUserAndPasswordFromFile(String fileName) {
         try {
             List<String> allLinesList = Files.readAllLines(Paths.get(filePath + fileName));
             DB_URL = allLinesList.get(0);
             DB_NAME = allLinesList.get(1);
             DB_USER = allLinesList.get(2);
             DB_PASSWORD = allLinesList.get(3);
+            return true;
         } catch (IOException e){
-            System.out.println("Cant read from config file");
+            e.printStackTrace();
+            return false;
         }
     }
 }

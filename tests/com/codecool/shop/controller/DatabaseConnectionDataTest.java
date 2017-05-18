@@ -14,15 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DatabaseConnectionDataTest {
 
     @Test
-    public void testToConnectToTheDb() throws SQLException{
+    public void testConnectToTheDbWithValidUser() throws SQLException{
         DatabaseConnectionData.setupUserAndPasswordFromFile("testConnection.properties");
         Connection connection = DriverManager.getConnection(
                 DatabaseConnectionData.getDb(),
                 DatabaseConnectionData.getDbUser(),
                 DatabaseConnectionData.getDbPassword());
-
         assertEquals(4, 4);
+    }
 
+    @Test
+    public void testConnectToDbWithInvalidUser() throws SQLException {
+        boolean isValid = DatabaseConnectionData.setupUserAndPasswordFromFile("testConnectionFake.properties");
+        assertFalse(isValid);
     }
 
 }
