@@ -9,12 +9,20 @@ public class Address {
     private String city;
     private String zip;
     private String address;
+    private int id;
+    private int counter;
 
     public Address(String country, String city, String zip, String address) {
+        counter ++;
+        id = counter;
         this.country = country;
         this.city = city;
         this.zip = zip;
         this.address = address;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getCountry() {
