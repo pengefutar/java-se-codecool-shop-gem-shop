@@ -36,6 +36,7 @@ public class ProductCategoryDaoTest {
         while (iter.hasNext()) {
             ProductCategory productCategory = iter.next();
             iter.remove();
+            productCategoryDao.remove(productCategory.getId());
         }
     }
 

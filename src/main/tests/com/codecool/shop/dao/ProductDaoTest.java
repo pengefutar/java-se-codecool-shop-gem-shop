@@ -1,14 +1,13 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.dao.implementation.ProductDaoImplJdbc;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -40,9 +39,13 @@ public class ProductDaoTest {
 
     static Stream<Arguments> daoAndProductProvider() {
         ProductCategory testCategory = new ProductCategory("sport", "dep", "desc");
-        testCategory.setId(1);
+        ProductCategoryDaoImplJdbc productCategoryJdbcDao = new ProductCategoryDaoImplJdbc();
+        productCategoryJdbcDao.add(testCategory);
+        testCategory.setId(productCategoryJdbcDao.getAll().get(0).getId());
         Supplier testSupplier = new Supplier("ebay", "desc");
-        testSupplier.setId(1);
+        SupplierDaoJdbc supplierDaoJdbc = new SupplierDaoJdbc();
+        supplierDaoJdbc.add(testSupplier);
+        testSupplier.setId(supplierDaoJdbc.getAll().get(0).getId());
         Product testProduct = new Product("testName", 1,
                 "USD", "testDescription",
                 testCategory, testSupplier);
@@ -57,6 +60,8 @@ public class ProductDaoTest {
                         testProduct,testProduct2,testSupplier,testCategory));
     }
 
+
+
     @AfterEach
     public void cleanUp(ProductDao productDao){
         int numOfLines = productDao.getAll().size();
@@ -64,6 +69,7 @@ public class ProductDaoTest {
         while (iter.hasNext()) {
             Product product = iter.next();
             iter.remove();
+            productDao.remove(product.getId());
         }
     }
 
