@@ -21,11 +21,14 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
         try {
             String query = "INSERT INTO Categories " +
                     "(category_name, category_department, category_description)" +
-                    " VALUES(?,?);";
+                    " VALUES(?,?,?);";
             Connection connection = getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, category.getName());
-            stmt.setString(2, category.getDescription());
+            stmt.setString(2, category.getDepartment());
+            stmt.setString(3, category.getDescription());
+
+
             executeQuery(stmt.toString());
         }
         catch (SQLException e) {

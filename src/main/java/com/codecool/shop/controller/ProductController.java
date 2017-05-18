@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class ProductController {
     private static ProductDao productDataStore;
-    private static ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-    private static SupplierDao supplierDataStore = DaoProvider.supplierDao;
+    private static ProductCategoryDao productCategoryDataStore;
+    private static SupplierDao supplierDataStore;
 
     private static void checkAndSetupStaticVar(){
         if (productDataStore == null) productDataStore = DaoProvider.productDao;
