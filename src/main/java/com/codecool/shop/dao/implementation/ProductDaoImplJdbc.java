@@ -169,27 +169,4 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 dbConn.getDbUser(),
                 dbConn.getDbPassword());
     }
-
-//    public static void main(String[] args){
-//
-        // object for method testing, leave here to help test writing
-//        ProductDaoImplJdbc a = new ProductDaoImplJdbc();
-//        Supplier supplierExample = new Supplier("ebay", "ebay_desc");
-//        supplierExample.setId(1);
-//        ProductCategory productCategoryExample = new ProductCategory("sport", "department",
-//                "description");
-//        productCategoryExample.setId(2);
-//        Product productExample = new Product("prod_example", 123,
-//                "USD","desc",
-//                productCategoryExample, supplierExample);
-//
-//        try {
-//            a.add(productExample);
-//            List<Product> list = a.getBy(supplierExample);
-//            list.forEach(p -> System.out.println(p.getName()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("asdasdasd");
-//        }
-//    }
 }

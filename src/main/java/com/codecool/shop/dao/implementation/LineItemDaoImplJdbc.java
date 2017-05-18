@@ -103,11 +103,5 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
                 conn.getDbUser(),
                 conn.getDbPassword());
     }
-
-    public static void main(String[] args) {
-        LineItemDaoImplJdbc a = new LineItemDaoImplJdbc();
-        List<LineItem> list = a.getAll();
-        list.forEach(p -> System.out.println(p.getPrice()));
-    }
 }
 

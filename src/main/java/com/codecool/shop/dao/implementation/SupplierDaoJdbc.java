@@ -99,15 +99,6 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
                 dbConn.getDbUser(),
                 dbConn.getDbPassword());
     }
-
-//    public static void main(String[] args) throws SQLException {
-//        SupplierDaoJdbc shop = new SupplierDaoJdbc();
-//        Supplier supplier = new Supplier("jh","gj");
-//        shop.add(supplier);
-//        System.out.println(shop.find(2));
-//        shop.remove(2);
-//        System.out.println(shop.getAll());
-//    }
 }
 
 
