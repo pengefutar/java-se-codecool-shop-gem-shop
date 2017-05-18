@@ -1,9 +1,8 @@
 package com.codecool.shop.controller;
 
 import org.junit.Test;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,19 +13,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DatabaseConnectionDataTest {
 
     @Test
-    public void testConnectToTheDbWithValidUser() throws SQLException{
+    public void testConnectToTheDbWithValidUser() throws SQLException {
         DatabaseConnectionData dbConn = new DatabaseConnectionData("testConnection.properties");
         Connection connection = DriverManager.getConnection(
                 dbConn.getDb(),
                 dbConn.getDbUser(),
                 dbConn.getDbPassword());
+        PreparedStatement stmt =  connection.prepareStatement("SELECT * FROM products;");
+        ResultSet resultSet = stmt.executeQuery();
+        assertTrue(resultSet.next());
     }
 
     @Test
-    public void testConnectToDbWithInvalidUser() throws SQLException {
+    public void testConnectToDbWithInvalidUser() {
         DatabaseConnectionData dbConn = new DatabaseConnectionData("testConnectionFake.properties");
         assertThrows(SQLException.class, () -> {
-            Connection connection = DriverManager.getConnection(
+            DriverManager.getConnection(
                     dbConn.getDb(),
                     dbConn.getDbUser(),
                     dbConn.getDbPassword());
