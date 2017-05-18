@@ -16,11 +16,6 @@ import java.util.List;
  */
 public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
 
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/gem_shop";
-    private static final String DB_USER = "keli";
-    private static final String DB_PASSWORD = "pg_Abc5354!";
-
-
     @Override
     public void add(Product product){
         String query = "INSERT INTO products (product_name, product_description, default_price, currency_id, " +
