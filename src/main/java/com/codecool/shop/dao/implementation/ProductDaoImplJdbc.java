@@ -30,6 +30,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(5, product.getProductCategory().getId());
             stmt.setInt(6, product.getSupplier().getId());
             executeQuery(stmt.toString());
+            connection.close();
         } catch (SQLException e){
             System.out.println("Couldn't add product");
         }
@@ -56,6 +57,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 product.setId(resultSet.getInt("id"));
                 return product;
             }
+            connection.close();
         } catch (SQLException e){
             System.out.println("Couldn't find product");
         }
@@ -71,6 +73,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             executeQuery(stmt.toString());
+            connection.close();
         } catch (SQLException e){
             System.out.println("Couldn't remove the product");
         }
@@ -96,6 +99,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 product.setId(resultSet.getInt("id"));
                 productList.add(product);
             }
+            connection.close();
         } catch (SQLException exception){
             System.out.println("Couldn't get all product");
         }
@@ -123,6 +127,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 product.setId(resultSet.getInt("id"));
                 productList.add(product);
             }
+            connection.close();
         } catch (SQLException e){
             System.out.println("Cannot get products by supplier");
         }
@@ -150,6 +155,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                 product.setId(resultSet.getInt("id"));
                 productListByCategory.add(product);
             }
+            connection.close();
         } catch (SQLException e){
             System.out.println("Cannot get products by product category");
         }

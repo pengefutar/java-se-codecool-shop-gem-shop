@@ -27,6 +27,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, order.getStatus().getValue());
             stmt.executeQuery();
+            connection.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -50,6 +51,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
                 lineItem.setId(lineId);
                 results.add(lineItem);
             }
+            connection.close();
             return results;
         }
         catch (SQLException e) {
@@ -70,8 +72,10 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             if (resultSet.next()) {
                 Order order = new Order(resultSet.getString("order_name"),
                         findLineItems(id));
+                connection.close();
                 return order;
             }
+            connection.close();
             return null;
         }
         catch (SQLException e) {
@@ -92,6 +96,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             lineItemJdbc.remove(lineItem.getId());
             }
             stmt.executeUpdate();
+            connection.close();
 
         }
         catch (SQLException e) {
@@ -116,6 +121,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
                 order.setId(dbId);
                 results.add(order);
             }
+            connection.close();
             return results;
         }
         catch (SQLException e) {

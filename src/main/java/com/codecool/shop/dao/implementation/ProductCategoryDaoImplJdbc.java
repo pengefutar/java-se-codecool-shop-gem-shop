@@ -27,9 +27,8 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getDepartment());
             stmt.setString(3, category.getDescription());
-
-
             executeQuery(stmt.toString());
+            connection.close();
         }
         catch (SQLException e) {
             System.out.println("Category could not be added to the database.");
@@ -53,8 +52,10 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
                         resultSet.getString("category_department"),
                         resultSet.getString("category_description"));
                 category.setId(resultSet.getInt("id"));
+                connection.close();
                 return category;
             }
+            connection.close();
             return null;
         }
         catch (SQLException e) {
@@ -71,7 +72,8 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
             Connection connection = getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
-            executeQuery(stmt.toString());}
+            executeQuery(stmt.toString());
+            connection.close();}
         catch (SQLException e) {
             System.out.println("Could not remove category from database.");
         }
@@ -98,6 +100,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
                 category.setId(dbId);
                 results.add(category);
             }
+            connection.close();
             return results;
         }
         catch (SQLException e) {
