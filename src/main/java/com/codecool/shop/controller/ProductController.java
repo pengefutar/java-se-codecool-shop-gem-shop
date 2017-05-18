@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
@@ -10,16 +11,23 @@ import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProductController {
-    private static ProductDao productDataStore = ProductDaoMem.getInstance();
-    private static ProductCategoryDaoMem productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-    private static SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+    private static ProductDao productDataStore;
+    private static ProductCategoryDao productCategoryDataStore;
+    private static SupplierDao supplierDataStore;
 
+    private static void checkAndSetupStaticVar(){
+        if (productDataStore == null) productDataStore = DaoProvider.productDao;
+        if (productCategoryDataStore == null) productCategoryDataStore = DaoProvider.productCategoryDao;
+        if (supplierDataStore == null) supplierDataStore = DaoProvider.supplierDao;
+    }
 
-    public static ModelAndView renderProducts(Request req, Response res) {
+    public static ModelAndView renderProducts(Request req, Response res) throws SQLException {
+        checkAndSetupStaticVar();
         Map params = new HashMap<>();
         ShoppingCart currentSession = req.session().attribute("shoppingCart");
         int shoppingListSize = currentSession.getShoppingList().size();
@@ -30,7 +38,8 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderByCategory(Request req, Response res) {
+    public static ModelAndView renderByCategory(Request req, Response res) throws SQLException {
+        checkAndSetupStaticVar();
         int searchedId = Integer.parseInt(req.params(":id"));
         ShoppingCart currentSession = req.session().attribute("shoppingCart");
         int shoppingListSize = currentSession.getShoppingList().size();
@@ -42,7 +51,8 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderBySupplier(Request req, Response res) {
+    public static ModelAndView renderBySupplier(Request req, Response res) throws SQLException {
+        checkAndSetupStaticVar();
         int searchedId = Integer.parseInt(req.params(":id"));
         Map params = new HashMap<>();
         ShoppingCart currentSession = req.session().attribute("shoppingCart");
@@ -55,6 +65,7 @@ public class ProductController {
     }
 
     public static ModelAndView renderToCart(Request req, Response res, ShoppingCart shoppingCart) {
+        checkAndSetupStaticVar();
         Map params = new HashMap<>();
         params.put("lineitems", shoppingCart.getShoppingList());
         if (0 < shoppingCart.getShoppingList().size()) {
@@ -68,6 +79,7 @@ public class ProductController {
     }
 
     public static ModelAndView renderToCheckout(Request req, Response res) {
+        checkAndSetupStaticVar();
         Map params = new HashMap<>();
         return new ModelAndView(params, "product/checkout");
     }
