@@ -20,4 +20,3 @@ target/
 hs_err_pid*
 
 parameter.txt
-connection.properties

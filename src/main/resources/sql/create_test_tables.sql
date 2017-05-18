@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS Suppliers (
   supplier_name VARCHAR(40),
   supplier_description VARCHAR(40)
 );
+--ALTER SEQUENCE suppliers_id_seq RESTART WITH 1 INCREMENT BY 1;
 
 CREATE TABLE IF NOT EXISTS Products (
   id SERIAL PRIMARY KEY,
@@ -52,31 +53,31 @@ CREATE TABLE IF NOT EXISTS Line_items (
   FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
 
-INSERT INTO Currencies VALUES('USD');
-INSERT INTO Currencies VALUES('EUR');
-
-INSERT INTO Categories(category_name, category_department, category_description) VALUES ('sport', 'dep', 'desc');
-INSERT INTO Categories(category_name, category_department, category_description) VALUES ('ent', 'dep', 'desc');
-
-INSERT INTO Suppliers(supplier_name, supplier_description) VALUES ('ebay','desc');
-INSERT INTO Suppliers(supplier_name, supplier_description) VALUES ('ali', 'desc');
-
-INSERT INTO Products(product_name, product_description, default_price, currency_id,
-                          category_id, supplier_id) VALUES('product1', 'desc', 55, 'USD', 1, 1);
-INSERT INTO Products(product_name, product_description, default_price, currency_id,
-                          category_id, supplier_id) VALUES('product2', 'desc', 12, 'USD', 2, 2);
-INSERT INTO Products(product_name, product_description, default_price, currency_id,
-                          category_id, supplier_id) VALUES('product3', 'desc', 25, 'USD', 1, 2);
-
-INSERT INTO Order_status(status_name) VALUES ('new');
-INSERT INTO Order_status(status_name) VALUES ('hold');
-INSERT INTO Order_status(status_name) VALUES ('paid');
-INSERT INTO Order_status(status_name) VALUES ('shipped');
-INSERT INTO Order_status(status_name) VALUES ('delivered');
-INSERT INTO Order_status(status_name) VALUES ('closed');
-
-INSERT INTO Orders(status_id) VALUES(1);
-
-INSERT INTO Line_items (product_id, quantity, price, order_id)
-VALUES (1, 1, 55, 1);
+-- INSERT INTO Currencies VALUES('USD');
+-- INSERT INTO Currencies VALUES('EUR');
+--
+-- INSERT INTO Categories(category_name, category_department, category_description) VALUES ('sport', 'dep', 'desc');
+-- INSERT INTO Categories(category_name, category_department, category_description) VALUES ('ent', 'dep', 'desc');
+--
+-- INSERT INTO Suppliers(supplier_name, supplier_description) VALUES ('ebay','desc');
+-- INSERT INTO Suppliers(supplier_name, supplier_description) VALUES ('ali', 'desc');
+--
+-- INSERT INTO Products(product_name, product_description, default_price, currency_id,
+--                           category_id, supplier_id) VALUES('product1', 'desc', 55, 'USD', 1, 1);
+-- INSERT INTO Products(product_name, product_description, default_price, currency_id,
+--                           category_id, supplier_id) VALUES('product2', 'desc', 12, 'USD', 2, 2);
+-- INSERT INTO Products(product_name, product_description, default_price, currency_id,
+--                           category_id, supplier_id) VALUES('product3', 'desc', 25, 'USD', 1, 2);
+--
+-- INSERT INTO Order_status(status_name) VALUES ('new');
+-- INSERT INTO Order_status(status_name) VALUES ('hold');
+-- INSERT INTO Order_status(status_name) VALUES ('paid');
+-- INSERT INTO Order_status(status_name) VALUES ('shipped');
+-- INSERT INTO Order_status(status_name) VALUES ('delivered');
+-- INSERT INTO Order_status(status_name) VALUES ('closed');
+--
+-- INSERT INTO Orders(status_id) VALUES(1);
+--
+-- INSERT INTO Line_items (product_id, quantity, price, order_id)
+-- VALUES (1, 1, 55, 1);
 

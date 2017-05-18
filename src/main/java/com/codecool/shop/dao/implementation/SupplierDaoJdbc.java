@@ -42,6 +42,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
         if (resultSet.next()){
         Supplier supplier = new Supplier(resultSet.getString("supplier_name"),
                 resultSet.getString("supplier_description"));
+                supplier.setId(id);
         return supplier;
         }
         return null;
@@ -60,8 +61,9 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, id);
-        executeQuery(stmt.toString());}
+        stmt.executeQuery();}
         catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("Could not remove supplier from database.");
         }
 

@@ -6,6 +6,8 @@ import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,7 +21,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Created by eszti on 2017.05.18..
+ * Created by eszti on 1017.05.18..
  */
 public class SupplierDaoTest {
 
@@ -31,8 +33,14 @@ public class SupplierDaoTest {
                 ));
     }
 
-//    SupplierDao supplierDao = new SupplierDaoJdbc();
-//    Supplier testSupplier = new Supplier("testName", "testDesc");
+
+    public static void cleanUp(SupplierDao supplierDao){
+        int numOfLines = supplierDao.getAll().size();
+        for (int i=0; i<numOfLines+1; i++) {
+            supplierDao.remove(i);
+        }
+    }
+
 
     @ParameterizedTest
     @MethodSource(names = "daoAndSupplierProvider")
@@ -42,6 +50,7 @@ public class SupplierDaoTest {
         supplierDao.add(testSupplier);
         assertEquals(numOfItems+1, supplierDao.getAll().size());
         supplierDao.remove(1);
+        cleanUp(supplierDao);
     }
 
     @ParameterizedTest
@@ -51,6 +60,7 @@ public class SupplierDaoTest {
         supplierDao.add(testSupplier);
         assertEquals(testSupplier, supplierDao.find(1));
         supplierDao.remove(1);
+        cleanUp(supplierDao);
     }
 
     @ParameterizedTest
@@ -61,6 +71,7 @@ public class SupplierDaoTest {
         supplierDao.add(testSupplier);
         supplierDao.remove(1);
         assertEquals(numOfItems, supplierDao.getAll().size());
+        cleanUp(supplierDao);
     }
 
     @ParameterizedTest
@@ -76,5 +87,6 @@ public class SupplierDaoTest {
         for (int i=0; i<5; i++) {
             supplierDao.remove(1);
         }
+        cleanUp(supplierDao);
     }
 }
