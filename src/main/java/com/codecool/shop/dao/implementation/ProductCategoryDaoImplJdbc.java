@@ -3,6 +3,8 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.*;
@@ -16,6 +18,7 @@ import java.util.List;
 
 public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCategoryDao {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductCategory.class);
     @Override
     public void add(ProductCategory category) {
         try {
@@ -28,6 +31,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
             stmt.setString(2, category.getDepartment());
             stmt.setString(3, category.getDescription());
             executeQuery(stmt.toString());
+            logger.info("New category( {} ) added to the database.", category.getName());
             connection.close();
         }
         catch (SQLException e) {
@@ -52,6 +56,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
                         resultSet.getString("category_department"),
                         resultSet.getString("category_description"));
                 category.setId(resultSet.getInt("id"));
+                logger.info("Category( {} ) found.", category.getName());
                 connection.close();
                 return category;
             }
@@ -73,6 +78,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             executeQuery(stmt.toString());
+            logger.info("Category( {} ) removed from the database.", id);
             connection.close();}
         catch (SQLException e) {
             System.out.println("Could not remove category from database.");
@@ -99,6 +105,7 @@ public class ProductCategoryDaoImplJdbc extends JdbcDao implements ProductCatego
                         resultSet.getString("category_description"));
                 category.setId(dbId);
                 results.add(category);
+                logger.info("Category( {} ) got from the database.", category.getName());
             }
             connection.close();
             return results;

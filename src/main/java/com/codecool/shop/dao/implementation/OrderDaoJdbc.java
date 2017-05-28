@@ -3,6 +3,8 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
 
     ProductDaoImplJdbc productJdbc = new ProductDaoImplJdbc();
     LineItemDaoImplJdbc lineItemJdbc = new LineItemDaoImplJdbc();
+    private static final Logger logger = LoggerFactory.getLogger(Order.class);
 
     @Override
     public void add(Order order) {
@@ -27,6 +30,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, order.getStatus().getValue());
             stmt.executeQuery();
+            logger.info("New order( {} ) added to the database.", order.getName());
             connection.close();
         }
         catch (SQLException e) {
@@ -72,6 +76,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             if (resultSet.next()) {
                 Order order = new Order(resultSet.getString("order_name"),
                         findLineItems(id));
+                logger.info("Order( {} ) found.", order.getName());
                 connection.close();
                 return order;
             }
@@ -93,7 +98,8 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
             stmt.setInt(1, id);
             List<LineItem> lineItems = findLineItems(id);
             for(LineItem lineItem : lineItems) {
-            lineItemJdbc.remove(lineItem.getId());
+                lineItemJdbc.remove(lineItem.getId());
+                logger.info("Lineitem( {} ) removed from the database.", id);
             }
             stmt.executeUpdate();
             connection.close();
@@ -120,6 +126,7 @@ public class OrderDaoJdbc extends JdbcDao implements OrderDao {
                         findLineItems(dbId));
                 order.setId(dbId);
                 results.add(order);
+                logger.info("Order( {} ) got from the database.", order.getName());
             }
             connection.close();
             return results;

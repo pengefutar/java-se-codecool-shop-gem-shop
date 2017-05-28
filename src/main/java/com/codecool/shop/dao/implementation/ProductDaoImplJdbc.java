@@ -5,6 +5,8 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.List;
  * Created by keli on 2017.05.15..
  */
 public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
+
+    private static final Logger logger = LoggerFactory.getLogger(Product.class);
 
     @Override
     public void add(Product product){
@@ -30,6 +34,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             stmt.setInt(5, product.getProductCategory().getId());
             stmt.setInt(6, product.getSupplier().getId());
             executeQuery(stmt.toString());
+            logger.info("New product( {} ) added to the database.", product.getName());
             connection.close();
         } catch (SQLException e){
             System.out.println("Couldn't add product");
@@ -54,6 +59,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         resultSet.getString("product_description"),
                         productCategoryDaoImplJdbc.find(resultSet.getInt("category_id")),
                         supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
+                logger.info("Product( {} ) found.", product.getName());
                 product.setId(resultSet.getInt("id"));
                 return product;
             }
@@ -73,6 +79,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             executeQuery(stmt.toString());
+            logger.info("Product( {} ) removed from the database.", id);
             connection.close();
         } catch (SQLException e){
             System.out.println("Couldn't remove the product");
@@ -98,6 +105,7 @@ public class ProductDaoImplJdbc extends JdbcDao implements ProductDao{
                         supplierDaoJdbc.find(resultSet.getInt("supplier_id")));
                 product.setId(resultSet.getInt("id"));
                 productList.add(product);
+                logger.info("Product( {} ) got from the database.", product.getName());
             }
             connection.close();
         } catch (SQLException exception){

@@ -3,6 +3,8 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
  */
 public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
 
+    private static final Logger logger = LoggerFactory.getLogger(Supplier.class);
+
     @Override
     public void add(Supplier supplier) {
         try {
@@ -22,6 +26,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
             stmt.setString(1, supplier.getName());
             stmt.setString(2, supplier.getDescription());
             executeQuery(stmt.toString());
+            logger.info("New supplier( {} ) added to the database.", supplier.getName());
             connection.close();
         }
         catch (SQLException e) {
@@ -44,7 +49,8 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
         if (resultSet.next()){
         Supplier supplier = new Supplier(resultSet.getString("supplier_name"),
                 resultSet.getString("supplier_description"));
-                supplier.setId(id);
+        supplier.setId(id);
+        logger.info("Supplier( {} ) found.", supplier.getName());
         return supplier;
         }
         connection.close();
@@ -65,6 +71,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, id);
         executeQuery(stmt.toString());
+        logger.info("Supplier( {} ) removed from the database.", id);
         connection.close();}
         catch (SQLException e) {
             System.out.println("Could not remove supplier from database.");
@@ -89,6 +96,7 @@ public class SupplierDaoJdbc extends JdbcDao implements SupplierDao {
                     resultSet.getString("supplier_description"));
             supplier.setId(dbId);
             results.add(supplier);
+            logger.info("Supplier( {} ) got from the database.", supplier.getName());
         }
         connection.close();
         return results;}

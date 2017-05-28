@@ -1,5 +1,7 @@
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.codecool.shop.controller.DaoProvider;
 import com.codecool.shop.controller.ProductController;
@@ -22,6 +24,7 @@ public class Main {
     private static SupplierDao supplierDataStore;
     private static ShoppingCart shoppingCart = new ShoppingCart();
     private static ProductCategoryDao productCategoryDataStore;
+    private static final Logger logger = LoggerFactory.getLogger(LineItem.class);
 
     private static boolean isDb = true;     // change this to state!!
 
@@ -71,6 +74,7 @@ public class Main {
             LineItem lineItem = lineItemDataStore.find(Integer.parseInt(req.params(":lineitem-id")));
             lineItem.setQuantity(lineItem.getQuantity() + 1);
             JSONObject jsonObj = CreateLineItemJSONObject(lineItem);
+            logger.info("Lineitem( {} ) quantity increased.", lineItem.getProduct().getName());
 
             res.type("application/json");
             return jsonObj;
@@ -80,6 +84,7 @@ public class Main {
             Integer ID = Integer.parseInt(req.params(":lineitem-id"));
             LineItem lineItem = lineItemDataStore.find(ID);
             lineItem.setQuantity(lineItem.getQuantity() - 1);
+            logger.info("Lineitem( {} ) quantity decreased.", lineItem.getProduct().getName());
             if (lineItem.getQuantity() == 0) {
                 shoppingCart.remove(lineItem);
                 JSONObject jsonObj = new JSONObject();
@@ -107,6 +112,7 @@ public class Main {
             }
             if (!lineItemFound) {
                 LineItem lineItem = new LineItem(product);
+                logger.info("New lineitem( {} ) added.", lineItem.getProduct().getName());
                 lineItemDataStore.add(lineItem);
                 shoppingCart.add(lineItem);
             }

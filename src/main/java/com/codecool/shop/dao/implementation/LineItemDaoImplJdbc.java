@@ -4,6 +4,8 @@ import java.sql.*;
 import com.codecool.shop.controller.DatabaseConnectionData;
 import com.codecool.shop.dao.LineItemDao;
 import com.codecool.shop.model.LineItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
 
     ProductDaoImplJdbc productJdbc = new ProductDaoImplJdbc();
+    private static final Logger logger = LoggerFactory.getLogger(LineItem.class);
 
     @Override
     public void add(LineItem lineItem) {
@@ -27,6 +30,7 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
             stmt.setInt(1, lineItem.getProduct().getId());
             stmt.setInt(2, lineItem.getQuantity());
             stmt.setFloat(3, lineItem.getPrice());
+            logger.info("New lineitem( {} ) added to the database.", lineItem.getProduct().getName());
             executeQuery(stmt.toString());
         }
         catch (SQLException e) {
@@ -43,10 +47,10 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
-
             if (resultSet.next()) {
                 LineItem lineItem = new LineItem(productJdbc.find(
                         resultSet.getInt("product_id")));
+                logger.info("Lineitem( {} ) found.", lineItem.getProduct().getName());
                 return lineItem;
             }
             return null;
@@ -64,6 +68,7 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
             Connection connection = getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
+            logger.info("Lineitem( {} ) removed from the database.", id);
             executeQuery(stmt.toString());
         }
         catch (SQLException e) {
@@ -87,6 +92,7 @@ public class LineItemDaoImplJdbc extends JdbcDao implements LineItemDao {
                         resultSet.getInt("product_id")));
                 lineItem.setId(dbId);
                 results.add(lineItem);
+                logger.info("Lineitem( {} ) got from the database.", lineItem.getProduct().getName());
             }
             return results;
         }
